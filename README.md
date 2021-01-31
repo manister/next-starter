@@ -1,2 +1,3 @@
 # next-starter template
-next starter setup with typescript, redux & tailwindcss
+
+next starter setup with typescript & tailwindcss
