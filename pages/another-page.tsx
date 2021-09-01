@@ -3,7 +3,6 @@ import Link from 'next/link'
 import Layout from '~/components/layout/main'
 import Container from '~/components/layout/container'
 
-
 const IndexComponent: React.FunctionComponent = () => (
   <Layout>
     <Head>
@@ -12,9 +11,10 @@ const IndexComponent: React.FunctionComponent = () => (
     <Container>
       <h1>another page</h1>
       <br />
-      <Link href="/"><span>back to home page</span></Link>
+      <Link passHref href="/">
+        <a>back to home page</a>
+      </Link>
     </Container>
-
   </Layout>
 )
 export default IndexComponent

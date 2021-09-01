@@ -1,8 +1,5 @@
 module.exports = {
-  purge: [
-    './components/**/*.tsx',
-    './pages/**/*.tsx',
-  ],
+  purge: ['./components/**/*.tsx', './pages/**/*.tsx'],
   theme: {
     extend: {
       fontFamily: {
@@ -38,7 +35,8 @@ module.exports = {
         '11/12': '91.666667%',
       },
     },
-    filter: { // defaults to {}
+    filter: {
+      // defaults to {}
       none: 'none',
       grayscale: 'grayscale(1)',
       invert: 'invert(1)',
@@ -47,7 +45,5 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [
-    require('tailwindcss-filters'),
-  ],
+  plugins: [require('tailwindcss-filters')],
 }

@@ -1,8 +1,8 @@
-import { AppWrapper } from '~/state/context';
+import { AppWrapper } from '~/state/context'
 
-import { AppProps } from 'next/app';
-import 'typeface-lato';
-import '~/css/tailwind.css';
+import { AppProps } from 'next/app'
+import 'typeface-lato'
+import '~/css/tailwind.css'
 
 const Application: React.FunctionComponent<AppProps> = ({
   Component,
@@ -12,7 +12,7 @@ const Application: React.FunctionComponent<AppProps> = ({
     <AppWrapper>
       <Component {...pageProps} />
     </AppWrapper>
-  );
-};
+  )
+}
 
-export default Application;
+export default Application
