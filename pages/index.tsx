@@ -1,11 +1,11 @@
 import Head from 'next/head'
-import Link from 'next/link'
-import Layout from '~/components/layout/main'
-import Container from '~/components/layout/container'
+import Layout from '~/components/layout/Main'
+import Container from '~/components/layout/Container'
 import { useGlobalState } from '~/state/context'
+import LinkTo from '~/components/global/LinkTo'
 
 const IndexComponent: React.FunctionComponent = () => {
-  const { state, dispatch } = useGlobalState()
+  const { state, actions } = useGlobalState()
   const { count } = state
   return (
     <Layout>
@@ -15,16 +15,14 @@ const IndexComponent: React.FunctionComponent = () => {
       <Container>
         <h1>Hello World</h1>
         <br />
-        <Link passHref href="/another-page">
-          <a>another page</a>
-        </Link>
+        <LinkTo href="/another-page">another page</LinkTo>
         <br />
         <input
           type="number"
           value={count}
           onChange={(e) => {
             const newCount = parseInt(e.target.value)
-            dispatch({ type: 'SET_COUNT', payload: newCount })
+            actions.setCount(newCount)
           }}
         ></input>
       </Container>
