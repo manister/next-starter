@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import Link from 'next/link'
-import Layout from '~/components/layout/main'
-import Container from '~/components/layout/container'
+import Layout from '~/components/layout/Main'
+import Container from '~/components/layout/Container'
+import LinkTo from '~/components/global/LinkTo'
 
 const IndexComponent: React.FunctionComponent = () => (
   <Layout>
@@ -11,9 +11,7 @@ const IndexComponent: React.FunctionComponent = () => (
     <Container>
       <h1>another page</h1>
       <br />
-      <Link passHref href="/">
-        <a>back to home page</a>
-      </Link>
+      <LinkTo href="/">back to home page</LinkTo>
     </Container>
   </Layout>
 )

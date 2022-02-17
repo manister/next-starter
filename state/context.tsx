@@ -1,50 +1,23 @@
-import { createContext, Dispatch, useContext, useReducer } from 'react'
+import { createContext, useContext, useReducer } from 'react'
+import { IAppContext } from '~/lib/types'
+import createActions from './actions'
+import initialState from './initialState'
+import reducer from './reducer'
 
-interface IState {
-  count: number
-}
+const hook = (): IAppContext => {
+  const [state, dispatch] = useReducer(reducer, initialState)
 
-interface IAction {
-  type: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  payload: any
-}
-
-interface IAppContext {
-  state: IState
-  dispatch: Dispatch<IAction>
-}
-
-const reducer = (state: IState, { type, payload }: IAction): IState => {
-  switch (type) {
-    case 'INCREMENT':
-      return {
-        ...state,
-        count: state.count + 1,
-      }
-    case 'SET_COUNT':
-      return {
-        ...state,
-        count: payload,
-      }
-    default:
-      return state
+  const actions = createActions(dispatch)
+  return {
+    state,
+    actions,
   }
 }
 
-const initialState: IState = {
-  count: 0,
-}
-
-const AppContext = createContext({ state: initialState } as IAppContext)
+const AppContext = createContext({} as IAppContext)
 
 export const AppWrapper: React.FunctionComponent = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
-  return (
-    <AppContext.Provider value={{ state, dispatch }}>
-      {children}
-    </AppContext.Provider>
-  )
+  return <AppContext.Provider value={hook()}>{children}</AppContext.Provider>
 }
 
 export const useGlobalState = (): IAppContext => useContext(AppContext)
