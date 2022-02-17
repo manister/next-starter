@@ -1,10 +1,9 @@
 import Head from 'next/head'
 import Layout from '~/components/layout/Main'
 import Container from '~/components/layout/Container'
-import { useGlobalState } from '~/state/context'
+// import { useGlobalState } from '~/state/context'
 
 const IndexComponent: React.FunctionComponent = () => {
-  const { state } = useGlobalState()
   return (
     <Layout>
       <Head>

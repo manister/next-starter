@@ -26,6 +26,11 @@ const config: NetlifyCmsConfig = {
           widget: 'image',
         },
         {
+          label: 'Scoville Rating',
+          name: 'scoville',
+          widget: 'number',
+        },
+        {
           label: 'Body',
           name: 'body',
           widget: 'markdown',
