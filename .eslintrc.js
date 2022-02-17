@@ -9,9 +9,6 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': ['error'],
-    '@typescript-eslint/explicit-function-return-type': [
-      'error',
-      { allowExpressions: true },
-    ],
+    '@typescript-eslint/explicit-function-return-type': ['error'],
   },
 }
