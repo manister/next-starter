@@ -12,16 +12,18 @@ const chilliesPath = path.join(process.cwd(), '_content/chillies')
 interface Props {
   handle: string
   content: string
+  data: Record<string, unknown>
 }
 
 interface IParams extends ParsedUrlQuery {
   handle: string
 }
 
-const ChilliPage: React.FunctionComponent<Props> = ({ handle, content }) => {
+const ChilliPage: React.FunctionComponent<Props> = ({ handle, content, data }) => {
   return (
     <>
       {handle}: <ReactMarkdown>{content}</ReactMarkdown>
+      {data.scoville}
     </>
   )
 }
@@ -34,12 +36,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: false }
 }
 
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { handle } = params as IParams
-  const data = fs.readFileSync(`${chilliesPath}/${handle}.md`, 'utf-8')
-  const { content } = matter(data)
+  const raw = fs.readFileSync(`${chilliesPath}/${handle}.md`, 'utf-8')
+  const { data, content } = matter(raw)
   return {
-    props: { handle, content },
+    props: { handle, content, data },
   }
 }
 

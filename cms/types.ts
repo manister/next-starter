@@ -2,23 +2,8 @@
 // https://www.netlifycms.org/docs/configuration-options/
 
 type PublishMode = 'simple' | 'editorial_workflow'
-type ExtensionType =
-  | 'yml'
-  | 'yaml'
-  | 'toml'
-  | 'json'
-  | 'md'
-  | 'markdown'
-  | 'html'
-type FormatType =
-  | 'yml'
-  | 'yaml'
-  | 'toml'
-  | 'json'
-  | 'frontmatter'
-  | 'yaml-frontmatter'
-  | 'toml-frontmatter'
-  | 'json-frontmatter'
+type ExtensionType = 'yml' | 'yaml' | 'toml' | 'json' | 'md' | 'markdown' | 'html'
+type FormatType = 'yml' | 'yaml' | 'toml' | 'json' | 'frontmatter' | 'yaml-frontmatter' | 'toml-frontmatter' | 'json-frontmatter'
 type WidgetType =
   | 'boolean'
   | 'date'
