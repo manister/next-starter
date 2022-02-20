@@ -5,8 +5,7 @@
 import Link, { LinkProps } from 'next/link'
 import { AnchorHTMLAttributes, PropsWithChildren } from 'react'
 
-type PropTypes = LinkProps &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>
+type PropTypes = LinkProps & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>
 
 /// A unified component for the next/link <Link> and a standard <a> anchor.
 /// Will lift href and all other props from Link up to the Link.

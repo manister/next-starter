@@ -4,10 +4,7 @@ import { AppProps } from 'next/app'
 import 'typeface-lato'
 import '~/css/tailwind.css'
 
-const Application: React.FunctionComponent<AppProps> = ({
-  Component,
-  pageProps,
-}: AppProps) => {
+const Application: React.FunctionComponent<AppProps> = ({ Component, pageProps }: AppProps) => {
   return (
     <AppWrapper>
       <Component {...pageProps} />
