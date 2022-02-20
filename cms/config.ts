@@ -8,6 +8,7 @@ const config: NetlifyCmsConfig = {
   },
   media_folder: 'public/img',
   public_folder: 'img',
+  publish_mode: 'editorial_workflow',
   collections: [
     {
       label: 'Chilli',
