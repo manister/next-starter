@@ -33,7 +33,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git pull
-        git rm --cached _data
+        git rm --cached -r _data
         git add _data
         git commit -m "Data file generated"
         git push
