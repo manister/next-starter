@@ -1,4 +1,4 @@
-name: CI
+name: Create and commit the data file
 on:
   push:
     paths:
@@ -33,6 +33,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git pull
+        git rm --cached _data
         git add _data
         git commit -m "Data file generated"
         git push
