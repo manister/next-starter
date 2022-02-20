@@ -1,0 +1,26 @@
+name: CI
+on:
+  push:
+    paths:
+      - '_content/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Create local changes
+      run: |
+        npm install matter
+        npm install ts-node
+        npm run build:json
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add _data
+        git commit -m "Data file generated" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}

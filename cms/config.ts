@@ -11,7 +11,7 @@ const config: NetlifyCmsConfig = {
   collections: [
     {
       label: 'Chilli',
-      name: 'blog',
+      name: 'chillis',
       folder: '_content/chillies',
       create: true,
       fields: [

@@ -10,7 +10,8 @@
     "export": "yarn build && next export",
     "deploy": "yarn export",
     "lint": "next lint",
-    "upgrade-all": "yarn-upgrade-all"
+    "upgrade-all": "yarn-upgrade-all",
+    "build:json": "node --loader ts-node/esm scripts/generateChilliJSON.ts"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +41,7 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.5.1",
+    "ts-node": "^10.5.0",
     "typescript": "^4.5.5",
     "yarn-upgrade-all": "^0.6.1"
   }

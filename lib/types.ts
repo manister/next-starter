@@ -1,3 +1,15 @@
+export interface IChilliDatum {
+  title: string
+  thumbnail: string
+  scoville: number
+  content: string
+  handle: string
+}
+
+export interface IChilliData {
+  [handle: string]: IChilliDatum
+}
+
 export interface IState {
   count: number
 }
