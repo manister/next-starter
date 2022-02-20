@@ -27,12 +27,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 }
 
-const ChilliPage: React.FunctionComponent<Props> = ({ handle, content, scoville, thumbnail, title }) => {
+const ChilliPage: React.FunctionComponent<Props> = ({ handle, content, scovilleMin, scovilleMax, species, title }) => {
   return (
     <>
       {handle}: <ReactMarkdown>{content}</ReactMarkdown>
-      {scoville}
-      {thumbnail}
+      {scovilleMin}
+      {scovilleMax}
+      {species}
       {title}
     </>
   )

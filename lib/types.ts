@@ -1,7 +1,8 @@
 export interface IChilliDatum {
   title: string
-  thumbnail: string
-  scoville: number
+  species: string
+  scovilleMin: number
+  scovilleMax: number
   content: string
   handle: string
 }
