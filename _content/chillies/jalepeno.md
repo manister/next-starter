@@ -5,4 +5,4 @@ scoville: 10000
 ---
 # Hello
 
-Jaleneno **time**
+Jaleneno
