@@ -10,7 +10,7 @@ interface IParams extends ParsedUrlQuery {
   handle: string
 }
 
-const chilliData = require('../../_data/chilli-data.json') as IChilliData
+const chilliData = require('../../_data/chillies-data.json') as IChilliData
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = Object.keys(chilliData).map((handle) => {
