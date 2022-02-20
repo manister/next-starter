@@ -1,6 +1,6 @@
 ---
 title: Habenero
 thumbnail: img/img_7401.jpg
-scoville: 99998
+scoville: 100000
 ---
-Example
+Habenero content
