@@ -19,7 +19,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add _data
-        git commit -m "Data file generated" -a
+        git commit -m "Data file generated"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
