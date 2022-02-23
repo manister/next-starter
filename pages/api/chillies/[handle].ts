@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { IChilliData } from '~/lib/types'
+import { importAll } from '~/lib/webpack-helpers'
 
-const chilliData = require('../../../_data/chillies-data.json') as IChilliData
+const chilliData = importAll(require.context('../../../_content/chillies', false, /\.md$/)) as IChilliData
 
 const handler = (req: NextApiRequest, res: NextApiResponse): void => {
   const { handle } = req.query

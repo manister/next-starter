@@ -1,16 +1,21 @@
+import HTMLReactParser from 'html-react-parser'
 import { GetStaticPaths, GetStaticProps } from 'next'
+
 import { ParsedUrlQuery } from 'querystring'
 import React from 'react'
-import ReactMarkdown from 'react-markdown'
-import { IChilliData, IChilliDatum } from '~/lib/types'
+import { IChilliAttributes, IChilliData } from '~/lib/types'
+import { importAll } from '~/lib/webpack-helpers'
 
-type Props = IChilliDatum
+interface Props extends IChilliAttributes {
+  handle: string
+  html: string
+}
 
 interface IParams extends ParsedUrlQuery {
   handle: string
 }
 
-const chilliData = require('../../_data/chillies-data.json') as IChilliData
+const chilliData = importAll(require.context('../../_content/chillies', false, /\.md$/)) as IChilliData
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = Object.keys(chilliData).map((handle) => {
@@ -23,14 +28,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { handle } = params as IParams
   const foundChilli = chilliData[handle]
   return {
-    props: foundChilli ? foundChilli : {},
+    props: foundChilli ? { ...foundChilli.attributes, handle, html: foundChilli.html } : {},
   }
 }
 
-const ChilliPage: React.FunctionComponent<Props> = ({ handle, content, scovilleMin, scovilleMax, species, title }) => {
+const ChilliPage: React.FunctionComponent<Props> = ({ scovilleMin, scovilleMax, species, title, handle, html }) => {
   return (
     <>
-      {handle}: <ReactMarkdown>{content}</ReactMarkdown>
+      {handle}
+      {HTMLReactParser(html)}
       {scovilleMin}
       {scovilleMax}
       {species}

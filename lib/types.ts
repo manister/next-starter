@@ -1,14 +1,15 @@
-export interface IChilliDatum {
+export interface IChilliAttributes {
   title: string
   species: string
   scovilleMin: number
   scovilleMax: number
-  content: string
-  handle: string
 }
 
 export interface IChilliData {
-  [handle: string]: IChilliDatum
+  [handle: string]: {
+    attributes: IChilliAttributes
+    html: string
+  }
 }
 
 export interface IState {
