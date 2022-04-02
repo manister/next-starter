@@ -1,15 +1,43 @@
-export interface IChilliAttributes {
-  title: string
-  species: string
-  scovilleMin: number
-  scovilleMax: number
+export interface IChilli {
+  name: string
+  handle: string
+  desc: string
+  scoville: number[]
+  sowRange: string[]
+  ttm: number
+  colours: IColour[]
+  species: ISpecies[]
+  images: IImage[]
+  origin: IOrigin[]
 }
 
-export interface IChilliData {
-  [handle: string]: {
-    attributes: IChilliAttributes
-    html: string
-  }
+export interface IColour {
+  name: string
+  handle: string
+  rgb: [number, number, number]
+}
+
+export interface ISpecies {
+  name: string
+  handle: string
+}
+
+export interface IImage {
+  alt: string
+  attr: string
+  id: string
+  width: number
+  height: number
+  url: string
+  filename: string
+  size: number
+  type: string
+}
+
+export interface IOrigin {
+  name: string
+  handle: string
+  images: IImage[]
 }
 
 export interface IState {

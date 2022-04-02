@@ -4,7 +4,7 @@ import createActions from './actions'
 import initialState from './initialState'
 import reducer from './reducer'
 
-const hook = (): IAppContext => {
+const Hook = (): IAppContext => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const actions = createActions(dispatch)
@@ -17,7 +17,7 @@ const hook = (): IAppContext => {
 const AppContext = createContext({} as IAppContext)
 
 export const AppWrapper: React.FunctionComponent = ({ children }) => {
-  return <AppContext.Provider value={hook()}>{children}</AppContext.Provider>
+  return <AppContext.Provider value={Hook()}>{children}</AppContext.Provider>
 }
 
 export const useGlobalState = (): IAppContext => useContext(AppContext)

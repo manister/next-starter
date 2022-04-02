@@ -3,44 +3,44 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 
 import { ParsedUrlQuery } from 'querystring'
 import React from 'react'
-import { IChilliAttributes, IChilliData } from '~/lib/types'
-import { importAll } from '~/lib/webpack-helpers'
+import { getChilliesFromAirtable } from '~/lib/airtable'
+import { IChilli } from '~/lib/types'
+// import { IChilliAttributes, IChilliData } from '~/lib/types'
+// import { importAll } from '~/lib/webpack-helpers'
 
-interface Props extends IChilliAttributes {
-  handle: string
-  html: string
-}
+type Props = IChilli
 
 interface IParams extends ParsedUrlQuery {
   handle: string
 }
 
-const chilliData = importAll(require.context('../../_content/chillies', false, /\.md$/)) as IChilliData
+// const chilliData = importAll(require.context('../../_content/chillies', false, /\.md$/)) as IChilliData
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = Object.keys(chilliData).map((handle) => {
+  const data = await getChilliesFromAirtable()
+  const paths = data.map(({ handle }) => {
     return { params: { handle } }
   })
   return { paths, fallback: false }
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const data = await getChilliesFromAirtable()
   const { handle } = params as IParams
-  const foundChilli = chilliData[handle]
+  const foundChilli = data.find((chilli) => chilli.handle === handle)
   return {
-    props: foundChilli ? { ...foundChilli.attributes, handle, html: foundChilli.html } : {},
+    props: foundChilli ?? {},
   }
 }
 
-const ChilliPage: React.FunctionComponent<Props> = ({ scovilleMin, scovilleMax, species, title, handle, html }) => {
+const ChilliPage: React.FunctionComponent<Props> = (props) => {
   return (
     <>
-      {handle}
-      {HTMLReactParser(html)}
-      {scovilleMin}
-      {scovilleMax}
-      {species}
-      {title}
+      {props.handle}
+      {HTMLReactParser(props.desc)}
+      {props.name}
+      {props.scoville[0]} - {props.scoville[1]}
+      {props.species[0].name}
     </>
   )
 }
