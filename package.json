@@ -10,8 +10,7 @@
     "export": "yarn build && next export",
     "deploy": "yarn export",
     "lint": "next lint",
-    "upgrade-all": "yarn-upgrade-all",
-    "build:json": "node --loader ts-node/esm scripts/generateJSON.ts"
+    "upgrade-all": "yarn-upgrade-all"
   },
   "keywords": [],
   "author": "",
