@@ -3,6 +3,7 @@ import { getChilliesFromAirtable } from '~/lib/airtable'
 import { IChilli } from '~/lib/types'
 import React from 'react'
 import ChilliCard from '~/components/chillies/ChilliCard'
+
 interface Props {
   chillies: IChilli[]
 }

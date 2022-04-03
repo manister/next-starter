@@ -4,7 +4,10 @@ module.exports = {
       test: /\.md$/,
       use: 'frontmatter-markdown-loader',
     })
-
     return config
+  },
+
+  images: {
+    domains: ['dl.airtable.com'],
   },
 }
