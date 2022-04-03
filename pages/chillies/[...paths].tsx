@@ -21,8 +21,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
   const { paths } = params as IParams
   let chillies: IChilli[] = []
   try {
-    if (typeof paths !== 'undefined' && paths.length > 2 && paths[0] === 'filtered') {
-      const filterFormula = routeArrayToFilter(paths.slice(1))
+    if (typeof paths !== 'undefined' && paths.length > 2) {
+      const filterFormula = routeArrayToFilter(paths)
       const data = await getChilliesFromAirtable({ filterFormula })
       chillies = data
     }
