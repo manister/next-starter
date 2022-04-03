@@ -1,8 +1,7 @@
 import { IChilli } from './types'
 
 const headers = {
-  Authorization: 'Bearer keyAH3gpuWrniCNXY',
-  // 'Content-Type': 'application/x-www-form-urlencoded',
+  Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
