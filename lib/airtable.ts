@@ -40,10 +40,19 @@ const shapeChilliData = (el: any): IChilli => {
   }
 }
 
-const endpoint = `https://api.airtable.com/v0/appCGefBVp6Wufwz3/Cultivars?&view=All`
-export const getChilliesFromAirtable = async (): Promise<IChilli[]> => {
+interface IGetChilliesOpts {
+  filterFormula?: string
+  view?: 'All'
+}
+
+const endpoint = new URL(`https://api.airtable.com/v0/appCGefBVp6Wufwz3/Cultivars`)
+export const getChilliesFromAirtable = async (opts: IGetChilliesOpts = { view: 'All' }): Promise<IChilli[]> => {
+  const view = opts?.view ?? 'All'
+  endpoint.searchParams.set('view', view)
+  if (opts?.filterFormula) endpoint.searchParams.set('filterByFormula', opts.filterFormula)
+  console.log(endpoint.toString())
   try {
-    const res = await fetch(endpoint, { headers })
+    const res = await fetch(endpoint.toString(), { headers })
     const data = await res.json()
     const chillies = (data.records as unknown[]).map(shapeChilliData)
     return chillies
