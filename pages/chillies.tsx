@@ -1,20 +1,29 @@
 import { GetStaticProps } from 'next'
-import JsonView from '~/components/utility/JsonView'
 import { getChilliesFromAirtable } from '~/lib/airtable'
-
+import { IChilli } from '~/lib/types'
+import React from 'react'
+import ChilliCard from '~/components/chillies/ChilliCard'
 interface Props {
-  data: Record<string, unknown>
+  chillies: IChilli[]
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const data = await getChilliesFromAirtable()
+  const chillies = await getChilliesFromAirtable()
   return {
-    props: { data },
+    props: { chillies },
   }
 }
 
-const ChilliPage: React.FunctionComponent<Props> = ({ data }) => {
-  return <JsonView src={data} />
+const ChilliPage: React.FunctionComponent<Props> = ({ chillies }) => {
+  return (
+    <>
+      {chillies.map((chilli) => (
+        <React.Fragment key={chilli.handle}>
+          <ChilliCard {...chilli} />
+        </React.Fragment>
+      ))}
+    </>
+  )
 }
 
 export default ChilliPage
