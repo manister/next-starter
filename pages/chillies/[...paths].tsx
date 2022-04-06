@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
 
 import { ParsedUrlQuery } from 'querystring'
 import React from 'react'
@@ -41,13 +42,20 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
 }
 
 const ChilliPage: React.FunctionComponent<Props> = (props) => {
+  const router = useRouter()
+
+  const { query } = router
+  const { paths } = query
+
   return (
     <>
-      {props.chillies.map((chilli) => (
-        <React.Fragment key={chilli.handle}>
-          <ChilliCard {...chilli} />
-        </React.Fragment>
-      ))}
+      <>
+        {props.chillies.map((chilli) => (
+          <React.Fragment key={chilli.handle}>
+            <ChilliCard {...chilli} />
+          </React.Fragment>
+        ))}
+      </>
     </>
   )
 }

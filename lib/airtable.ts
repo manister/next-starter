@@ -11,7 +11,7 @@ const shapeChilliData = (el: any): IChilli => {
     name: raw.name,
     handle: raw.handle,
     desc: raw.desc,
-    scoville: [raw.scomin, raw.scomax],
+    scoville: [raw.scoville_min, raw.scoville_max],
     sowRange: [raw.sowmin, raw.sowmax],
     ttm: raw.ttm,
     colours: ((raw.colours ?? []) as unknown[]).map((_colour, index) => ({

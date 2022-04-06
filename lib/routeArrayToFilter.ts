@@ -1,9 +1,22 @@
 const routeArrayToFilter = (arr: string[]): string => {
   return `AND(${arr.reduce((acca, item, index) => {
     if (index % 2 !== 0) return acca // skip odds
-    // or seperated by +:
-    const filterValues: string[] = arr[index + 1].split('+')
+    const filterValueString = arr[index + 1]
     const filterKey = item // this is the filter key on odd els
+    if (filterValueString.includes('::')) {
+      const [min, max] = filterValueString.split('::').map(parseFloat)
+      if (isNaN(min) || isNaN(max)) throw new Error('Range for range values filter must be 2 numbers, seperated by a double-colon.')
+      return `${acca}AND(${filterKey}_max >= ${min}, ${filterKey}_min <= ${max})${index + 2 === arr.length ? '' : ', '}`
+    }
+
+    if (filterValueString.includes(':')) {
+      const [min, max] = filterValueString.split(':').map(parseFloat)
+      if (isNaN(min) || isNaN(max)) throw new Error('Range filter for single values must be 2 numbers, seperated by a colon.')
+      return `${acca}AND(${filterKey}_max >= ${min}, ${filterKey}_min <= ${max})${index + 2 === arr.length ? '' : ', '}`
+    }
+
+    // possible seperated by +:
+    const filterValues: string[] = filterValueString.split('+')
     const orFilter = `OR(${filterValues.reduce((acc, filterValue, i) => {
       //build up an OR filter
       return `${acc}FIND("${filterValue}", {${filterKey}/handle})${i + 1 === filterValues.length ? '' : ', '}`
