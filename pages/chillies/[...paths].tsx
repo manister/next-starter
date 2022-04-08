@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 
 import { ParsedUrlQuery } from 'querystring'
-import React from 'react'
+import React, { useState } from 'react'
 import ChilliCard from '~/components/chillies/ChilliCard'
 import { getChilliesFromAirtable } from '~/lib/airtable'
 import routeArrayToFilter from '~/lib/routeArrayToFilter'
@@ -45,10 +45,14 @@ const ChilliPage: React.FunctionComponent<Props> = (props) => {
   const router = useRouter()
 
   const { query } = router
-  const { paths } = query
+  // const { paths } = query
+
+  const [filterPath, setFilterPath] = useState('')
 
   return (
     <>
+      <input type="text" value={filterPath} onChange={(e) => setFilterPath(e.target.value)} />
+      <button onClick={() => router.push(`/chillies/${filterPath}`)}>Set filter path</button>
       <>
         {props.chillies.map((chilli) => (
           <React.Fragment key={chilli.handle}>
