@@ -21,11 +21,8 @@ interface IParams extends ParsedUrlQuery {
 export const getServerSideProps: GetServerSideProps = async ({ params, res }) => {
   const { paths } = params as IParams
   let chillies: IChilli[] = []
-  
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59'
-   )
+
+  res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
 
   try {
     if (typeof paths !== 'undefined' && paths.length > 1) {
