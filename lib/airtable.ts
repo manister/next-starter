@@ -12,7 +12,7 @@ const shapeChilliData = (el: any): IChilli => {
     handle: raw.handle,
     desc: raw.desc,
     scoville: [raw.scoville_min, raw.scoville_max],
-    sowRange: [raw.sowmin, raw.sowmax],
+    sowRange: [raw.sowmin ?? 0, raw.sowmax ?? 0],
     ttm: raw.ttm,
     colours: ((raw.colours ?? []) as unknown[]).map((_colour, index) => ({
       name: raw['colours/name'][index],
@@ -57,7 +57,7 @@ export const getChilliesFromAirtable = async (opts: IGetChilliesOpts = { view: '
     const chillies = (data.records as unknown[]).map(shapeChilliData)
     return chillies
   } catch (e) {
-    console.log(e)
+    // console.log(e)
     return []
   }
 }
