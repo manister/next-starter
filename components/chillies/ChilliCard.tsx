@@ -1,17 +1,38 @@
 import Image from 'next/image'
+import React from 'react'
 import { IChilli } from '~/lib/types'
 import LinkTo from '../global/LinkTo'
 
 const ChilliCard: React.FunctionComponent<IChilli> = (props) => {
+  const { images, name, scoville, species } = props
+  const defaultImage = images[0]
   return (
     <div className="w-1/1">
+      {defaultImage && (
+        <LinkTo href={`/chillies/${props.handle}`}>
+          <Image width={200} height={200} alt={defaultImage.alt} src={defaultImage.url} />
+        </LinkTo>
+      )}
       <LinkTo href={`/chillies/${props.handle}`}>
-        {props.images[0] && <Image width={200} height={200} alt={props.images[0].alt} src={props.images[0].url} />}
+        <h2 className="text-lg">{name}</h2>
       </LinkTo>
-      <h2 className="text-lg">{props.name}</h2>
-      {props.scoville[0]} - {props.scoville[1]}
-      {props.species[0].name}
-      <LinkTo href={`/chillies/${props.handle}`}>{props.name}</LinkTo>
+
+      {scoville && (
+        <>
+          {scoville[0]} - {scoville[1]}
+        </>
+      )}
+      {species.length > 0 && (
+        //Make into component for species list
+        <>
+          {species.map((item, index) => (
+            <React.Fragment key={item.handle}>
+              <LinkTo href={`/chillies/species/${item.handle}`}>{item.name}</LinkTo>
+              {index + 1 === species.length ? '' : ','}
+            </React.Fragment>
+          ))}
+        </>
+      )}
     </div>
   )
 }

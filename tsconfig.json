@@ -19,6 +19,7 @@
     "jsx": "preserve",
     "downlevelIteration": true,
     "baseUrl": ".",
+    "noUncheckedIndexedAccess": true,
     "paths": {
       "~/*": [
         "./*"

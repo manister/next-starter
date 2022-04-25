@@ -2,8 +2,8 @@ export interface IChilli {
   name: string
   handle: string
   desc: string
-  scoville: number[]
-  sowRange: string[]
+  scoville: [number, number] | null
+  sowRange: [string, string] | null
   ttm: number
   colours: IColour[]
   species: ISpecies[]

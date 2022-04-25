@@ -1,9 +1,9 @@
 import { GetServerSideProps } from 'next'
-import { useRouter } from 'next/router'
 
 import { ParsedUrlQuery } from 'querystring'
-import React, { useState } from 'react'
-import ChilliCard from '~/components/chillies/ChilliCard'
+import React from 'react'
+
+import ChilliListing from '~/components/chillies/ChillisListing'
 import { getChilliesFromAirtable } from '~/lib/airtable'
 import routeArrayToFilter from '~/lib/routeArrayToFilter'
 import { IChilli } from '~/lib/types'
@@ -21,9 +21,7 @@ interface IParams extends ParsedUrlQuery {
 export const getServerSideProps: GetServerSideProps = async ({ params, res }) => {
   const { paths } = params as IParams
   let chillies: IChilli[] = []
-
-  res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
-
+  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=360')
   try {
     if (typeof paths !== 'undefined' && paths.length > 1) {
       const filterFormula = routeArrayToFilter(paths)
@@ -33,38 +31,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
   } catch (e) {
     console.log(e)
   }
-  if (!chillies || chillies.length < 1) {
-    res.statusCode = 404
-  }
+
   return {
     props: {
       chillies,
     },
-    notFound: !chillies || chillies.length < 1,
   }
 }
 
-const ChilliPage: React.FunctionComponent<Props> = (props) => {
-  const router = useRouter()
-
-  const { query } = router
-  // const { paths } = query
-
-  const [filterPath, setFilterPath] = useState('')
-
-  return (
-    <>
-      <input type="text" value={filterPath} onChange={(e) => setFilterPath(e.target.value)} />
-      <button onClick={() => router.push(`/chillies/${filterPath}`)}>Set filter path</button>
-      <>
-        {props.chillies.map((chilli) => (
-          <React.Fragment key={chilli.handle}>
-            <ChilliCard {...chilli} />
-          </React.Fragment>
-        ))}
-      </>
-    </>
-  )
-}
+const ChilliPage: React.FunctionComponent<Props> = ChilliListing
 
 export default ChilliPage

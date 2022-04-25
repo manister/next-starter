@@ -2,16 +2,19 @@ const routeArrayToFilter = (arr: string[]): string => {
   return `AND(${arr.reduce((acca, item, index) => {
     if (index % 2 !== 0) return acca // skip odds
     const filterValueString = arr[index + 1]
-    const filterKey = item // this is the filter key on odd els
+    if (!filterValueString) return acca
+    const filterKey = item.toLowerCase() // this is the filter key on odd els
     if (filterValueString.includes('::')) {
       const [min, max] = filterValueString.split('::').map(parseFloat)
-      if (isNaN(min) || isNaN(max)) throw new Error('Range for range values filter must be 2 numbers, seperated by a double-colon.')
+      if ((min && isNaN(min)) || (max && isNaN(max)))
+        throw new Error('Range for range values filter must be 2 numbers, seperated by a double-colon.')
       return `${acca}AND(${filterKey}_max >= ${min}, ${filterKey}_min <= ${max})${index + 2 === arr.length ? '' : ', '}`
     }
 
     if (filterValueString.includes(':')) {
       const [min, max] = filterValueString.split(':').map(parseFloat)
-      if (isNaN(min) || isNaN(max)) throw new Error('Range filter for single values must be 2 numbers, seperated by a colon.')
+      if ((min && isNaN(min)) || (max && isNaN(max)))
+        throw new Error('Range filter for single values must be 2 numbers, seperated by a colon.')
       return `${acca}AND(${filterKey}_max >= ${min}, ${filterKey}_min <= ${max})${index + 2 === arr.length ? '' : ', '}`
     }
 
