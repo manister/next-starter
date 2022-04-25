@@ -1,8 +1,10 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
+import Head from 'next/head'
 
 import { ParsedUrlQuery } from 'querystring'
 import React from 'react'
 import FullChilliProfile from '~/components/chillies/FullChilliProfile'
+import Layout from '~/components/layout/Layout'
 import { getChilliesFromAirtable } from '~/lib/airtable'
 import { IChilli } from '~/lib/types'
 
@@ -41,9 +43,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 }
 
-const ChilliPage: React.FunctionComponent<Props> = (props) => {
-  const { chilli } = props
-  return <FullChilliProfile {...chilli} />
-}
+const ChilliPage: React.FunctionComponent<Props> = (props) => (
+  <Layout>
+    <Head>
+      <title>{props.chilli.name}</title>
+    </Head>
+    <FullChilliProfile {...props.chilli} />
+  </Layout>
+)
 
 export default ChilliPage

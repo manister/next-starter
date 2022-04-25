@@ -1,9 +1,11 @@
 import { GetServerSideProps } from 'next'
+import Head from 'next/head'
 
 import { ParsedUrlQuery } from 'querystring'
 import React from 'react'
 
 import ChilliListing from '~/components/chillies/ChillisListing'
+import Layout from '~/components/layout/Layout'
 import { getChilliesFromAirtable } from '~/lib/airtable'
 import routeArrayToFilter from '~/lib/routeArrayToFilter'
 import { IChilli } from '~/lib/types'
@@ -39,6 +41,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
   }
 }
 
-const ChilliPage: React.FunctionComponent<Props> = ChilliListing
+const ChilliPage: React.FunctionComponent<Props> = (props) => (
+  <Layout>
+    <Head>
+      <title>{props.chillies.length} Chillies Found</title>
+    </Head>
+    <p>{props.chillies.length} Chillies Found</p>
+    <ChilliListing chillies={props.chillies} />
+  </Layout>
+)
 
 export default ChilliPage
