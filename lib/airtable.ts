@@ -83,7 +83,8 @@ interface IGetChilliesOpts {
   view?: 'All'
 }
 
-const endpoint = new URL(`https://api.airtable.com/v0/appCGefBVp6Wufwz3/Cultivars`)
+const endpoint = new URL(process.env.AIRTABLE_ENDPOINT as string)
+
 export const getChilliesFromAirtable = async (opts: IGetChilliesOpts = { view: 'All' }): Promise<IChilli[]> => {
   const view = opts?.view ?? 'All'
 

@@ -15,7 +15,7 @@ const routeArrayToFilter = (arr: string[]): string => {
       const [min, max] = filterValueString.split(':').map(parseFloat)
       if ((min && isNaN(min)) || (max && isNaN(max)))
         throw new Error('Range filter for single values must be 2 numbers, seperated by a colon.')
-      return `${acca}AND(${filterKey}_max >= ${min}, ${filterKey}_min <= ${max})${index + 2 === arr.length ? '' : ', '}`
+      return `${acca}AND(${filterKey} >= ${min}, ${filterKey} <= ${max})${index + 2 === arr.length ? '' : ', '}`
     }
 
     // possible seperated by +:
