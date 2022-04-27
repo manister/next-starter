@@ -5,7 +5,6 @@ import React from 'react'
 import ChilliListing from '~/components/chillies/ChillisListing'
 import Layout from '~/components/layout/Layout'
 import Head from 'next/head'
-import { Container } from 'postcss'
 
 interface Props {
   chillies: IChilli[]
