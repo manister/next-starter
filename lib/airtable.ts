@@ -81,6 +81,10 @@ const shapeChilliData = (el: any): IChilli => {
 interface IGetChilliesOpts {
   filterFormula?: string
   view?: 'All'
+  sort?: {
+    direction: 'asc' | 'desc'
+    field: string
+  }
 }
 
 const endpoint = new URL(process.env.AIRTABLE_ENDPOINT as string)
@@ -88,9 +92,17 @@ const endpoint = new URL(process.env.AIRTABLE_ENDPOINT as string)
 export const getChilliesFromAirtable = async (opts: IGetChilliesOpts = { view: 'All' }): Promise<IChilli[]> => {
   const view = opts?.view ?? 'All'
 
+  const sort = opts?.sort ?? {
+    direction: 'asc',
+    field: 'name',
+  }
+
   endpoint.searchParams.set('view', view)
 
   if (opts?.filterFormula) endpoint.searchParams.set('filterByFormula', opts.filterFormula)
+
+  endpoint.searchParams.set('sort[0][field]', sort.field)
+  endpoint.searchParams.set('sort[0][direction]', sort.direction)
 
   try {
     const res = await fetch(endpoint.toString(), { headers })

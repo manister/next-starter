@@ -36,10 +36,25 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   let requestType: requestType = null
   try {
     if (typeof paths !== 'undefined' && paths.length > 0) {
+      //do we have a sort by
+      const last = paths[paths.length - 1]
+      const hasSort = last && last?.includes('sort:')
+      let sort: { direction: 'asc' | 'desc'; field: string } | null = null
+
+      if (hasSort) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const [_s, field, dir] = last.split(':')
+        if (field && dir) {
+          const direction: 'asc' | 'desc' = dir === 'asc' || dir === 'desc' ? dir : 'asc'
+          sort = { field, direction }
+        }
+      }
+      const filterPaths = hasSort ? paths.slice(0, -1) : paths
+
       //just a handle or a filter path requested:
-      requestType = paths.length > 1 ? 'filter' : 'handle'
-      const filterFormula = requestType === 'filter' ? routeArrayToFilter(paths) : `{handle}="${paths[0]}"`
-      const data = await getChilliesFromAirtable({ filterFormula })
+      requestType = hasSort || filterPaths.length > 1 ? 'filter' : 'handle'
+      const filterFormula = requestType === 'filter' ? routeArrayToFilter(filterPaths) : `{handle}="${paths[0]}"`
+      const data = await getChilliesFromAirtable({ filterFormula, ...(sort ? { sort } : {}) })
       chillies = data
     }
   } catch (e) {
