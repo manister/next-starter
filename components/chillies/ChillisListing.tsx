@@ -10,22 +10,19 @@ const ChilliListing: React.FunctionComponent<Props> = (props) => {
   const { chillies } = props
   const router = useRouter()
 
-  // const { query } = router
-  // const { paths } = query
-
   const [filterPath, setFilterPath] = useState('')
 
   return (
     <>
       <input type="text" value={filterPath} onChange={(e) => setFilterPath(e.target.value)} />
       <button onClick={() => router.push(`/chillies/${filterPath}`)}>Set filter path</button>
-      <>
+      <ul className="flex flex-wrap">
         {chillies.map((chilli) => (
-          <React.Fragment key={chilli.handle}>
+          <li className="xs:w-1/1 sm:w-1/2 md:w-1/3 lg:w-1/4 mb-16 pl-8 pr-8" key={chilli.handle}>
             <ChilliCard {...chilli} />
-          </React.Fragment>
+          </li>
         ))}
-      </>
+      </ul>
     </>
   )
 }
