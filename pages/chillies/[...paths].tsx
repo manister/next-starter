@@ -11,12 +11,27 @@ import { getChilliesFromAirtable } from '~/lib/airtable'
 import routeArrayToFilter from '~/lib/routeArrayToFilter'
 import { IChilli } from '~/lib/types'
 
+export interface IFilterValue {
+  value: string
+  displayValue: string
+  active: boolean
+  selected: boolean
+}
+
+export interface IFilter {
+  type: 'checkbox' | 'radio'
+  name: string
+  displayName: string
+  values: IFilterValue[]
+}
+
 //We are either requesting a filter or a handle:
 type requestType = 'filter' | 'handle' | null
 
 type Props = {
   chillies: IChilli[]
   requestType: requestType
+  filters: IFilter[]
 }
 interface IParams extends ParsedUrlQuery {
   paths: string[] | undefined
@@ -34,6 +49,28 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { paths } = params as IParams
   let chillies: IChilli[] = []
   let requestType: requestType = null
+  let filters: IFilter[] = []
+  const filterData: IFilter[] = [
+    {
+      type: 'checkbox',
+      name: 'species',
+      displayName: 'Species',
+      values: [
+        {
+          value: 'annuum',
+          displayValue: 'Annuum',
+          active: false,
+          selected: false,
+        },
+        {
+          value: 'chinense',
+          displayValue: 'Chinense',
+          active: false,
+          selected: false,
+        },
+      ],
+    },
+  ]
   try {
     if (typeof paths !== 'undefined' && paths.length > 0) {
       //do we have a sort by
@@ -56,6 +93,24 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       const filterFormula = requestType === 'filter' ? routeArrayToFilter(filterPaths) : `{handle}="${paths[0]}"`
       const data = await getChilliesFromAirtable({ filterFormula, ...(sort ? { sort } : {}) })
       chillies = data
+
+      filters = filterData.map((item) => {
+        const index = filterPaths.indexOf(item.name)
+        const value = filterPaths[index + 1]
+        if (value) {
+          const updatedValues = [...item.values]
+          const optionIndex = updatedValues.findIndex((option) => option.value === value)
+          if (updatedValues?.[optionIndex]) {
+            ;(updatedValues[optionIndex] as IFilterValue).active = true
+            ;(updatedValues[optionIndex] as IFilterValue).selected = true
+          }
+          return {
+            ...item,
+            values: updatedValues,
+          }
+        }
+        return item
+      })
     }
   } catch (e) {
     console.log(e)
@@ -64,13 +119,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       chillies,
       requestType,
+      filters,
     },
     notFound: requestType === 'handle' && (!chillies || chillies.length < 1),
     // revalidate: 10,
   }
 }
 
-const ChilliPage: React.FunctionComponent<Props> = ({ chillies, requestType }) => {
+const ChilliPage: React.FunctionComponent<Props> = ({ chillies, requestType, filters }) => {
   if (requestType === 'filter') {
     return (
       <Layout>
@@ -78,7 +134,7 @@ const ChilliPage: React.FunctionComponent<Props> = ({ chillies, requestType }) =
           <title>{chillies.length} Chillies Found</title>
         </Head>
         <p>{chillies.length} Chillies Found</p>
-        <ChilliListing chillies={chillies} />
+        <ChilliListing filters={filters} chillies={chillies} />
       </Layout>
     )
   } else if (requestType === 'handle' && chillies.length > 0) {

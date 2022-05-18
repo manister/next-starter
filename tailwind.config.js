@@ -3,7 +3,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Lato', 'sans-serif'],
+        sans: ['Heebo', 'sans-serif'],
       },
       spacing: {
         '1/1': '100%',
