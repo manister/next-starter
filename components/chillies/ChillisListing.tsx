@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { IChilli } from '~/lib/types'
-import { IFilter, IFilterValue } from '~/pages/chillies/[...paths]'
+import { IChilli, IFilter, IFilterValue } from '~/lib/types'
+
 import ChilliCard from './ChilliCard'
 
 const createPathFromFilters = (filters: IFilter[]): string => {

@@ -8,22 +8,8 @@ import ChilliListing from '~/components/chillies/ChillisListing'
 import FullChilliProfile from '~/components/chillies/FullChilliProfile'
 import Layout from '~/components/layout/Layout'
 import { getChilliesFromAirtable } from '~/lib/airtable'
-import routeArrayToFilter from '~/lib/routeArrayToFilter'
-import { IChilli } from '~/lib/types'
-
-export interface IFilterValue {
-  value: string
-  displayValue: string
-  active: boolean
-  selected: boolean
-}
-
-export interface IFilter {
-  type: 'checkbox' | 'radio'
-  name: string
-  displayName: string
-  values: IFilterValue[]
-}
+import { filterData, getFiltersFromSchemaAndPaths, routeArrayToFilter } from '~/lib/filters'
+import { IChilli, IFilter } from '~/lib/types'
 
 //We are either requesting a filter or a handle:
 type requestType = 'filter' | 'handle' | null
@@ -50,30 +36,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   let chillies: IChilli[] = []
   let requestType: requestType = null
   let filters: IFilter[] = []
-  const filterData: IFilter[] = [
-    {
-      type: 'checkbox',
-      name: 'species',
-      displayName: 'Species',
-      values: [
-        {
-          value: 'annuum',
-          displayValue: 'Annuum',
-          active: false,
-          selected: false,
-        },
-        {
-          value: 'chinense',
-          displayValue: 'Chinense',
-          active: false,
-          selected: false,
-        },
-      ],
-    },
-  ]
   try {
     if (typeof paths !== 'undefined' && paths.length > 0) {
-      //do we have a sort by
+      //do we have a sort by?
       const last = paths[paths.length - 1]
       const hasSort = last && last?.includes('sort:')
       let sort: { direction: 'asc' | 'desc'; field: string } | null = null
@@ -88,33 +53,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       }
       const filterPaths = hasSort ? paths.slice(0, -1) : paths
 
+      filters = getFiltersFromSchemaAndPaths(filterData, filterPaths)
+
       //just a handle or a filter path requested:
       requestType = hasSort || filterPaths.length > 1 ? 'filter' : 'handle'
       const filterFormula = requestType === 'filter' ? routeArrayToFilter(filterPaths) : `{handle}="${paths[0]}"`
       const data = await getChilliesFromAirtable({ filterFormula, ...(sort ? { sort } : {}) })
       chillies = data
-
-      filters = filterData.map((item) => {
-        const index = filterPaths.indexOf(item.name)
-        const value = filterPaths[index + 1]
-        if (value) {
-          const updatedValues = [...item.values]
-          const optionIndex = updatedValues.findIndex((option) => option.value === value)
-          if (updatedValues?.[optionIndex]) {
-            ;(updatedValues[optionIndex] as IFilterValue).active = true
-            ;(updatedValues[optionIndex] as IFilterValue).selected = true
-          }
-          return {
-            ...item,
-            values: updatedValues,
-          }
-        }
-        return item
-      })
     }
   } catch (e) {
     console.log(e)
   }
+
   return {
     props: {
       chillies,

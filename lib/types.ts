@@ -44,6 +44,41 @@ export interface IState {
   count: number
 }
 
+export interface IFilterSchemaValue {
+  value: string
+  displayValue: string
+}
+
+export interface IFilterValue extends IFilterSchemaValue {
+  active: boolean
+  selected: boolean
+}
+
+export interface IFilterSchemaList {
+  type: 'checkbox' | 'radio'
+  name: string
+  displayName: string
+  values: IFilterSchemaValue[]
+}
+
+export interface IFilterList extends IFilterSchemaList {
+  values: IFilterValue[]
+}
+
+export interface IFilterSchemaRange {
+  type: 'range' | 'rangerange' // rangerange is when values themselves are ranges, eg a 1000-1500 scoville
+  name: string
+  displayName: string
+  domain: [min: number, max: number] // total range of possible values
+}
+
+export interface IFilterRange extends IFilterSchemaRange {
+  active: [min: number, max: number]
+  selected: [min: number, max: number]
+}
+export type IFilterSchema = IFilterSchemaList | IFilterSchemaRange
+export type IFilter = IFilterList | IFilterRange
+
 export interface IActionIncrementCount {
   type: 'INCREMENT'
   payload: number
