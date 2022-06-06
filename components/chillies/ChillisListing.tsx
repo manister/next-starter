@@ -1,7 +1,10 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { filterArrayToPathArray } from '~/lib/filters'
-import { IChilli, IFilter, IFilterValue } from '~/lib/types'
+import Slider from 'rc-slider'
+import 'rc-slider/assets/index.css'
+
+import { filterArrayToPathArray, updateListFilter, updateRangeFilter } from '~/lib/filters'
+import { IChilli, IFilter } from '~/lib/types'
 
 import ChilliCard from './ChilliCard'
 
@@ -16,13 +19,9 @@ const ChilliListing: React.FunctionComponent<Props> = (props) => {
 
   const [currentFilters, setCurrentFilters] = useState(filters)
 
-  // useEffect(() => {
-  //   setCurrentFilters(filters)
-  // }, [filters])
-
   return (
     <>
-      {currentFilters.map((filter) => {
+      {currentFilters.map((filter, index) => {
         if (filter.type === 'list') {
           return (
             <div key={filter.name}>
@@ -33,11 +32,7 @@ const ChilliListing: React.FunctionComponent<Props> = (props) => {
                     <>
                       <input
                         onChange={(e) => {
-                          const newFilters = [...currentFilters]
-                          if (filter?.values?.[optionIndex]) {
-                            const option = filter.values[optionIndex] as IFilterValue
-                            option.active = e.target.checked
-                          }
+                          const newFilters = updateListFilter(currentFilters, index, optionIndex, e.target.checked)
                           setCurrentFilters(newFilters)
                         }}
                         type={'checkbox'}
@@ -49,6 +44,39 @@ const ChilliListing: React.FunctionComponent<Props> = (props) => {
                 })}
               </ul>
             </div>
+          )
+        }
+        if (filter.type === 'range') {
+          return (
+            <>
+              <Slider
+                range
+                allowCross={false}
+                min={filter.domain[0]}
+                max={filter.domain[1]}
+                value={filter.active}
+                onChange={(val) => {
+                  const newFilters = updateRangeFilter(currentFilters, index, val as [number, number])
+                  setCurrentFilters(newFilters)
+                }}
+              />
+              <input
+                type="number"
+                value={filter.active[0]}
+                onChange={(e) => {
+                  const newFilters = updateRangeFilter(currentFilters, index, [parseFloat(e.target.value), null])
+                  setCurrentFilters(newFilters)
+                }}
+              />
+              <input
+                type="number"
+                value={filter.active[1]}
+                onChange={(e) => {
+                  const newFilters = updateRangeFilter(currentFilters, index, [null, parseFloat(e.target.value)])
+                  setCurrentFilters(newFilters)
+                }}
+              />
+            </>
           )
         }
         return null

@@ -111,3 +111,43 @@ export const filterArrayToAirtableFilter = (filterArray: IFilter[]): string => {
   console.log(ret)
   return ret
 }
+
+export const updateRangeFilter = (filters: IFilter[], filterIndex: number, val: [number | null, number | null]): IFilter[] => {
+  const newFilters = [...filters]
+  const filter = newFilters[filterIndex]
+  if (!filter) {
+    console.error(`No filter at index ${filterIndex}`)
+    return newFilters
+  }
+  if (filter.type !== 'range') {
+    console.error(`Filter ${filter.name}, at index ${filterIndex} is not a range filter`)
+    return newFilters
+  }
+  const newVal = [...filter.active] as [number, number]
+  if (val[0] !== null) {
+    newVal[0] = val[0]
+  }
+  if (val[1] !== null) {
+    newVal[1] = val[1]
+  }
+  filter.active = newVal
+  return newFilters
+}
+
+export const updateListFilter = (filters: IFilter[], filterIndex: number, optionIndex: number, value: boolean): IFilter[] => {
+  const newFilters = [...filters]
+  const filter = newFilters[filterIndex]
+  if (!filter) {
+    console.error(`No filter at index ${filterIndex}`)
+    return newFilters
+  }
+  if (filter.type !== 'list') {
+    console.error(`Filter ${filter.name}, at index ${filterIndex} is not a list filter`)
+    return newFilters
+  }
+  const option = filter.values[optionIndex]
+  if (option) {
+    option.active = value
+  }
+  return newFilters
+}
