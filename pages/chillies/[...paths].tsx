@@ -8,7 +8,9 @@ import ChilliListing from '~/components/chillies/ChillisListing'
 import FullChilliProfile from '~/components/chillies/FullChilliProfile'
 import Layout from '~/components/layout/Layout'
 import { getChilliesFromAirtable } from '~/lib/airtable'
-import { filterData, getFiltersFromSchemaAndPaths, routeArrayToFilter } from '~/lib/filters'
+import { chunk } from '~/lib/data-helpers'
+import { filterArrayToAirtableFilter, getFilterSchema, pathArrayToFilterArray } from '~/lib/filters'
+
 import { IChilli, IFilter } from '~/lib/types'
 
 //We are either requesting a filter or a handle:
@@ -36,6 +38,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   let chillies: IChilli[] = []
   let requestType: requestType = null
   let filters: IFilter[] = []
+
+  const schema = getFilterSchema()
+
   try {
     if (typeof paths !== 'undefined' && paths.length > 0) {
       //do we have a sort by?
@@ -51,14 +56,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           sort = { field, direction }
         }
       }
-      const filterPaths = hasSort ? paths.slice(0, -1) : paths
+      const filterPaths = chunk(hasSort ? paths.slice(0, -1) : paths)
 
-      filters = getFiltersFromSchemaAndPaths(filterData, filterPaths)
+      filters = pathArrayToFilterArray(filterPaths, schema)
 
       //just a handle or a filter path requested:
-      requestType = hasSort || filterPaths.length > 1 ? 'filter' : 'handle'
-      const filterFormula = requestType === 'filter' ? routeArrayToFilter(filterPaths) : `{handle}="${paths[0]}"`
+      requestType = hasSort || filterPaths.length > 0 ? 'filter' : 'handle'
+      const filterFormula = requestType === 'filter' ? filterArrayToAirtableFilter(filters) : `{handle}="${paths[0]}"`
       const data = await getChilliesFromAirtable({ filterFormula, ...(sort ? { sort } : {}) })
+      console.log({ data, filterFormula })
       chillies = data
     }
   } catch (e) {

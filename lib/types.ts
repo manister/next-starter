@@ -51,11 +51,11 @@ export interface IFilterSchemaValue {
 
 export interface IFilterValue extends IFilterSchemaValue {
   active: boolean
-  selected: boolean
 }
 
 export interface IFilterSchemaList {
-  type: 'checkbox' | 'radio'
+  type: 'list'
+  subType: 'checkbox' | 'radio'
   name: string
   displayName: string
   values: IFilterSchemaValue[]
@@ -66,7 +66,8 @@ export interface IFilterList extends IFilterSchemaList {
 }
 
 export interface IFilterSchemaRange {
-  type: 'range' | 'rangerange' // rangerange is when values themselves are ranges, eg a 1000-1500 scoville
+  type: 'range'
+  subType: 'range' | 'rangerange' // rangerange is when values themselves are ranges, eg a 1000-1500 scoville
   name: string
   displayName: string
   domain: [min: number, max: number] // total range of possible values
@@ -74,7 +75,6 @@ export interface IFilterSchemaRange {
 
 export interface IFilterRange extends IFilterSchemaRange {
   active: [min: number, max: number]
-  selected: [min: number, max: number]
 }
 export type IFilterSchema = IFilterSchemaList | IFilterSchemaRange
 export type IFilter = IFilterList | IFilterRange
