@@ -4,6 +4,10 @@ import createActions from './actions'
 import initialState from './initialState'
 import reducer from './reducer'
 
+type Props = {
+  children: React.ReactNode
+}
+
 const Hook = (): IAppContext => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
@@ -16,7 +20,7 @@ const Hook = (): IAppContext => {
 
 const AppContext = createContext({} as IAppContext)
 
-export const AppWrapper: React.FunctionComponent = ({ children }) => {
+export const AppWrapper = ({ children }: Props): JSX.Element => {
   return <AppContext.Provider value={Hook()}>{children}</AppContext.Provider>
 }
 

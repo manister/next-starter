@@ -1,3 +1,7 @@
 {
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "workbench.colorCustomizations": {
+    "list.errorForeground": "#ff0000",
+    "list.warningForeground": "#FFFF00"
+  }
 }

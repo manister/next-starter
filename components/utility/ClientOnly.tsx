@@ -4,7 +4,7 @@ type Props = {
   children: React.ReactNode
 }
 
-const Comp: React.FunctionComponent<Props> = ({ children }) => <>{children}</>
+const Comp = ({ children }: Props): JSX.Element => <>{children}</>
 const ClientOnly = dynamic(() => Promise.resolve(Comp), {
   ssr: false,
 })

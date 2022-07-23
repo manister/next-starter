@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown'
 import { IChilli } from '~/lib/types'
 import LinkTo from '../global/LinkTo'
 
-const FullChilliProfile: React.FunctionComponent<IChilli> = (props) => {
+const FullChilliProfile = (props: IChilli): JSX.Element => {
   const { images, name, scoville, species, desc } = props
   const defaultImage = images[0]
   return (

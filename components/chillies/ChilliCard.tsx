@@ -3,7 +3,7 @@ import React from 'react'
 import { IChilli } from '~/lib/types'
 import LinkTo from '../global/LinkTo'
 
-const ChilliCard: React.FunctionComponent<IChilli> = (props) => {
+const ChilliCard = (props: IChilli): JSX.Element => {
   const { images, name, scoville, species, origin } = props
   const defaultImage = images[0]
   return (

@@ -5,7 +5,7 @@ type Props = {
   children: React.ReactNode
 }
 
-const Layout: React.FunctionComponent<Props> = ({ children }) => {
+const Layout = ({ children }: Props): JSX.Element => {
   const { state } = useGlobalState()
   const { count } = state
   return (

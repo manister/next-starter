@@ -89,7 +89,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 }
 
-const ChilliPage: React.FunctionComponent<Props> = ({ chillies, requestType, filters }) => {
+const ChilliPage = ({ chillies, requestType, filters }: Props): JSX.Element => {
   if (requestType === 'filter') {
     return (
       <Layout>
@@ -110,7 +110,7 @@ const ChilliPage: React.FunctionComponent<Props> = ({ chillies, requestType, fil
       </Layout>
     )
   }
-  return null
+  return <></>
 }
 
 export default ChilliPage

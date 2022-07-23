@@ -13,7 +13,7 @@ type Props = {
   filters: IFilter[]
 }
 
-const ChilliListing: React.FunctionComponent<Props> = (props) => {
+const ChilliListing = (props: Props): JSX.Element => {
   const { chillies, filters } = props
   const router = useRouter()
 

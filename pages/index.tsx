@@ -4,7 +4,7 @@ import Container from '~/components/layout/Container'
 import LinkTo from '~/components/global/LinkTo'
 import { useGlobalState } from '~/state/context'
 
-const IndexComponent: React.FunctionComponent = () => {
+const IndexComponent = (): JSX.Element => {
   const { state, actions } = useGlobalState()
   return (
     <Layout>
