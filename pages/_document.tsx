@@ -1,6 +1,6 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 
-const Document = () => (
+const Document = (): JSX.Element => (
   <Html>
     <Head>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
