@@ -15,6 +15,18 @@ export const filterSchemaMock: IFilterSchema[] = [
         value: 'chinense',
         displayValue: 'Chinense',
       },
+      {
+        value: 'frutescens',
+        displayValue: 'Frutescens',
+      },
+      {
+        value: 'pubescens',
+        displayValue: 'Pubescens',
+      },
+      {
+        value: 'baccatum',
+        displayValue: 'Baccatum',
+      },
     ],
   },
   {

@@ -14,11 +14,11 @@ import { filterArrayToAirtableFilter, getFilterSchema, pathArrayToFilterArray } 
 import { IChilli, IFilter } from '~/lib/types'
 
 //We are either requesting a filter or a handle:
-type requestType = 'filter' | 'handle' | null
+type IRequestType = 'filter' | 'handle' | null
 
 type Props = {
   chillies: IChilli[]
-  requestType: requestType
+  requestType: IRequestType
   filters: IFilter[]
 }
 interface IParams extends ParsedUrlQuery {
@@ -36,7 +36,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { paths } = params as IParams
   let chillies: IChilli[] = []
-  let requestType: requestType = null
+  let requestType: IRequestType = null
   let filters: IFilter[] = []
 
   const schema = getFilterSchema()
@@ -55,21 +55,31 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           const direction: 'asc' | 'desc' = dir === 'asc' || dir === 'desc' ? dir : 'asc'
           sort = { field, direction }
         }
+
+
       }
+
+      console.log({paths})
       const filterPaths = chunk(hasSort ? paths.slice(0, -1) : paths)
 
       filters = pathArrayToFilterArray(filterPaths, schema)
 
       //just a handle or a filter path requested:
       requestType = hasSort || filterPaths.length > 0 ? 'filter' : 'handle'
+
+
+      console.log({hasSort, filterPaths})
+
       const filterFormula = requestType === 'filter' ? filterArrayToAirtableFilter(filters) : `{handle}="${paths[0]}"`
       const data = await getChilliesFromAirtable({ filterFormula, ...(sort ? { sort } : {}) })
-      console.log({ data, filterFormula })
+      // console.log({ data, filterFormula })
       chillies = data
     }
   } catch (e) {
     console.log(e)
   }
+
+  // console.log({requestType})
 
   return {
     props: {
@@ -78,7 +88,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       filters,
     },
     notFound: requestType === 'handle' && (!chillies || chillies.length < 1),
-    // revalidate: 10,
+    revalidate: 10,
   }
 }
 

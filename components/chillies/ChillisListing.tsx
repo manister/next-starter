@@ -29,7 +29,7 @@ const ChilliListing: React.FunctionComponent<Props> = (props) => {
               <ul>
                 {filter.values.map((option, optionIndex) => {
                   return (
-                    <>
+                    <li key={option.value}>
                       <input
                         onChange={(e) => {
                           const newFilters = updateListFilter(currentFilters, index, optionIndex, e.target.checked)
@@ -39,7 +39,7 @@ const ChilliListing: React.FunctionComponent<Props> = (props) => {
                         checked={option.active}
                       />
                       <label>{option.displayValue}</label>
-                    </>
+                    </li>
                   )
                 })}
               </ul>
@@ -81,7 +81,10 @@ const ChilliListing: React.FunctionComponent<Props> = (props) => {
         }
         return null
       })}
-      <button onClick={() => router.push(filterArrayToPathArray(currentFilters).flat().join('/'))}>Apply</button>
+      <button onClick={() => {
+        const path = `/chillies/${filterArrayToPathArray(currentFilters).flat().join('/')}`
+        router.push(path)
+        }}>Apply</button>
       <ul className="flex flex-wrap">
         {chillies.map((chilli) => (
           <li className="xs:w-1/1 sm:w-1/2 md:w-1/3 lg:w-1/4 mb-4 pl-2 pr-2" key={chilli.handle}>
