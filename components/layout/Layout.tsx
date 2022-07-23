@@ -1,7 +1,11 @@
 import Container from './Container'
 import { useGlobalState } from '~/state/context'
 
-const Layout: React.FunctionComponent = ({ children }) => {
+type Props = {
+  children: React.ReactNode
+}
+
+const Layout: React.FunctionComponent<Props> = ({ children }) => {
   const { state } = useGlobalState()
   const { count } = state
   return (

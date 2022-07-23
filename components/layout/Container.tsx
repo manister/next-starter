@@ -1,5 +1,6 @@
 type Props = {
   className?: string
+  children: React.ReactNode //👈 children prop typr
 }
 
 const Container: React.FunctionComponent<Props> = ({ children, className }) => (
