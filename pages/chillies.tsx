@@ -22,7 +22,7 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 }
 
-const ChilliPage: React.FunctionComponent<Props> = ({chillies, filters}) => (
+const ChilliPage: React.FunctionComponent<Props> = ({ chillies, filters }) => (
   <Layout>
     <Head>
       <title>Chillies</title>

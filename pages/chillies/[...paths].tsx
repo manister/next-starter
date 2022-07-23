@@ -55,11 +55,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           const direction: 'asc' | 'desc' = dir === 'asc' || dir === 'desc' ? dir : 'asc'
           sort = { field, direction }
         }
-
-
       }
 
-      console.log({paths})
+      console.log({ paths })
       const filterPaths = chunk(hasSort ? paths.slice(0, -1) : paths)
 
       filters = pathArrayToFilterArray(filterPaths, schema)
@@ -67,8 +65,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       //just a handle or a filter path requested:
       requestType = hasSort || filterPaths.length > 0 ? 'filter' : 'handle'
 
-
-      console.log({hasSort, filterPaths})
+      console.log({ hasSort, filterPaths })
 
       const filterFormula = requestType === 'filter' ? filterArrayToAirtableFilter(filters) : `{handle}="${paths[0]}"`
       const data = await getChilliesFromAirtable({ filterFormula, ...(sort ? { sort } : {}) })

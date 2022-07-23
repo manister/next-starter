@@ -1,5 +1,5 @@
 export const chunk = <T>(arr: T[]): [T, T][] => {
-  if ((arr.length % 2)) {
+  if (arr.length % 2) {
     console.error('Array length is not disvible by 2, chunk failed')
     return []
   }

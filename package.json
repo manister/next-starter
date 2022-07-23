@@ -10,7 +10,8 @@
     "export": "yarn build && next export",
     "deploy": "yarn export",
     "lint": "next lint",
-    "upgrade-all": "yarn-upgrade-all"
+    "upgrade-all": "yarn-upgrade-all",
+    "prettier-format": "prettier --config .prettierrc '.' --write"
   },
   "keywords": [],
   "author": "",
