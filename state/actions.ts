@@ -1,15 +1,16 @@
 import { Dispatch } from 'react'
-import { IAction, IAppContext } from '~/lib/types'
 
 const createActions = (dispatch: Dispatch<IAction>): IAppContext['actions'] => {
   return {
     //all actions here
-    incrementCount: (amount: number): void => {
-      dispatch({ type: 'INCREMENT', payload: amount })
+    addToWishlist: (handle: string): void => {
+      dispatch({ type: 'ADD', payload: handle })
     },
-
-    setCount: (amount: number): void => {
-      dispatch({ type: 'SET_COUNT', payload: amount })
+    removeFromWishlist: (handle: string): void => {
+      dispatch({ type: 'REMOVE', payload: handle })
+    },
+    hydrate: (handles: string[]): void => {
+      dispatch({ type: 'REPLACE', payload: handles })
     },
   }
 }

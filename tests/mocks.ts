@@ -1,5 +1,3 @@
-import { IFilterSchema } from '~/lib/types'
-
 export const filterSchemaMock: IFilterSchema[] = [
   {
     type: 'list',

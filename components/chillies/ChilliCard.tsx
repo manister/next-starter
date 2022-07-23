@@ -1,11 +1,16 @@
 import Image from 'next/image'
 import React from 'react'
-import { IChilli } from '~/lib/types'
 import LinkTo from '../global/LinkTo'
 
+import { useGlobalState } from '~/state/context'
+
 const ChilliCard = (props: IChilli): JSX.Element => {
-  const { images, name, scoville, species, origin } = props
+  const { images, name, scoville, species, origin, handle } = props
   const defaultImage = images[0]
+
+  const { state, actions } = useGlobalState()
+  const { wishlist } = state
+
   return (
     <div className="w-1/1 h-1/1  overflow-hidden flex flex-col border-b-4 border-b-black border-x border-x-slate-300 border-t border-t-slate-300 bg-slate-100">
       {defaultImage && (
@@ -23,6 +28,13 @@ const ChilliCard = (props: IChilli): JSX.Element => {
         <LinkTo href={`/chillies/${props.handle}`}>
           <h2 className="text-xl font-extrabold uppercase mb-2">{name}</h2>
         </LinkTo>
+
+        {wishlist.has(handle) ? (
+          <button onClick={() => actions.removeFromWishlist(handle)}>remove</button>
+        ) : (
+          <button onClick={() => actions.addToWishlist(handle)}>add</button>
+        )}
+
         <div className="text-slate-600">
           {scoville && (
             <>

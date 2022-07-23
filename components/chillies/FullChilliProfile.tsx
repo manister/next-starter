@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import { IChilli } from '~/lib/types'
 import LinkTo from '../global/LinkTo'
 
 const FullChilliProfile = (props: IChilli): JSX.Element => {

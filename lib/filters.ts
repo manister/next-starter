@@ -1,6 +1,5 @@
 import { filterSchemaMock } from '~/tests/mocks'
 import { arrShallowEq } from './data-helpers'
-import { IFilter, IFilterList, IFilterRange, IFilterSchema } from './types'
 
 export const getFilterSchema = (): IFilterSchema[] => {
   //will have to come from real data
@@ -108,7 +107,6 @@ export const filterArrayToAirtableFilter = (filterArray: IFilter[]): string => {
     }
   })
   const ret = `AND(${airtableArray.join(', ')})`
-  console.log(ret)
   return ret
 }
 

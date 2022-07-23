@@ -1,5 +1,4 @@
 import { createContext, useContext, useReducer } from 'react'
-import { IAppContext } from '~/lib/types'
 import createActions from './actions'
 import initialState from './initialState'
 import reducer from './reducer'

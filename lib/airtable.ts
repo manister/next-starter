@@ -1,5 +1,3 @@
-import { IChilli } from './types'
-
 const headers = {
   Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
 }
@@ -25,7 +23,7 @@ const shapeChilliData = (el: any): IChilli => {
           rgb: ['r', 'g', 'b'].map((char) => raw[`colours/${char}`][index] as number) as [number, number, number],
         }
       } catch (e) {
-        console.log(e)
+        console.error(e)
         return []
       }
     }),
@@ -36,7 +34,7 @@ const shapeChilliData = (el: any): IChilli => {
           handle: raw['species/handle'][index],
         }
       } catch (e) {
-        console.log(e)
+        console.error(e)
         return []
       }
     }),
@@ -48,7 +46,7 @@ const shapeChilliData = (el: any): IChilli => {
           ...raw['image/data'][index],
         }
       } catch (e) {
-        console.log(e)
+        console.error(e)
         return []
       }
     }),
@@ -65,13 +63,13 @@ const shapeChilliData = (el: any): IChilli => {
                 ...raw['origin/image/data'][i],
               }
             } catch (e) {
-              console.log(e)
+              console.error(e)
               return []
             }
           }),
         }
       } catch (e) {
-        console.log(e)
+        console.error(e)
         return []
       }
     }),
@@ -112,13 +110,13 @@ export const getChilliesFromAirtable = async (opts: IGetChilliesOpts = { view: '
       try {
         return shapeChilliData(record)
       } catch (e) {
-        console.log(e)
+        console.error(e)
         return []
       }
     })
     return chillies
   } catch (e) {
-    console.log(e)
+    console.error(e)
     return []
   }
 }

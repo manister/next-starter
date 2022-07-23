@@ -11,10 +11,8 @@ import { getChilliesFromAirtable } from '~/lib/airtable'
 import { chunk } from '~/lib/data-helpers'
 import { filterArrayToAirtableFilter, getFilterSchema, pathArrayToFilterArray } from '~/lib/filters'
 
-import { IChilli, IFilter } from '~/lib/types'
-
 //We are either requesting a filter or a handle:
-type IRequestType = 'filter' | 'handle' | null
+type IRequestType = 'listing' | 'handle' | null
 
 type Props = {
   chillies: IChilli[]
@@ -37,12 +35,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { paths } = params as IParams
   let chillies: IChilli[] = []
   let requestType: IRequestType = null
-  let filters: IFilter[] = []
 
   const schema = getFilterSchema()
+  let filters = pathArrayToFilterArray([], schema)
 
   try {
-    if (typeof paths !== 'undefined' && paths.length > 0) {
+    if (typeof paths === 'undefined' || paths.length == 0) {
+      //no paths, load all chillies
+      requestType = 'listing'
+      chillies = await getChilliesFromAirtable()
+    } else {
       //do we have a sort by?
       const last = paths[paths.length - 1]
       const hasSort = last && last?.includes('sort:')
@@ -56,24 +58,20 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           sort = { field, direction }
         }
       }
-
-      console.log({ paths })
       const filterPaths = chunk(hasSort ? paths.slice(0, -1) : paths)
 
       filters = pathArrayToFilterArray(filterPaths, schema)
 
       //just a handle or a filter path requested:
-      requestType = hasSort || filterPaths.length > 0 ? 'filter' : 'handle'
+      requestType = hasSort || filterPaths.length > 0 ? 'listing' : 'handle'
 
-      console.log({ hasSort, filterPaths })
-
-      const filterFormula = requestType === 'filter' ? filterArrayToAirtableFilter(filters) : `{handle}="${paths[0]}"`
+      const filterFormula = requestType === 'listing' ? filterArrayToAirtableFilter(filters) : `{handle}="${paths[0]}"`
       const data = await getChilliesFromAirtable({ filterFormula, ...(sort ? { sort } : {}) })
       // console.log({ data, filterFormula })
       chillies = data
     }
   } catch (e) {
-    console.log(e)
+    console.error({ error: e })
   }
 
   // console.log({requestType})
@@ -90,11 +88,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 
 const ChilliPage = ({ chillies, requestType, filters }: Props): JSX.Element => {
-  if (requestType === 'filter') {
+  if (requestType === 'listing') {
     return (
       <Layout>
         <Head>
-          <title>{chillies.length} Chillies Found</title>
+          <title>
+            <>{chillies.length} Chillies Found</>
+          </title>
         </Head>
         <p>{chillies.length} Chillies Found</p>
         <ChilliListing filters={filters} chillies={chillies} />

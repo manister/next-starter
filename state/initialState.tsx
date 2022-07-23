@@ -1,6 +1,4 @@
-import { IState } from '~/lib/types'
-
 const initialState: IState = {
-  count: 0,
+  wishlist: new Set([]),
 }
 export default initialState

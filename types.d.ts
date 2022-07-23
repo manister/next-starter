@@ -1,4 +1,4 @@
-export interface IChilli {
+interface IChilli {
   name: string
   handle: string
   desc: string
@@ -11,18 +11,18 @@ export interface IChilli {
   origin: IOrigin[]
 }
 
-export interface IColour {
+interface IColour {
   name: string
   handle: string
   rgb: [number, number, number]
 }
 
-export interface ISpecies {
+interface ISpecies {
   name: string
   handle: string
 }
 
-export interface IImage {
+interface IImage {
   alt: string
   attr: string
   id: string
@@ -34,26 +34,26 @@ export interface IImage {
   type: string
 }
 
-export interface IOrigin {
+interface IOrigin {
   name: string
   handle: string
   images: IImage[]
 }
 
-export interface IState {
-  count: number
+interface IState {
+  wishlist: Set<string>
 }
 
-export interface IFilterSchemaValue {
+interface IFilterSchemaValue {
   value: string
   displayValue: string
 }
 
-export interface IFilterValue extends IFilterSchemaValue {
+interface IFilterValue extends IFilterSchemaValue {
   active: boolean
 }
 
-export interface IFilterSchemaList {
+interface IFilterSchemaList {
   type: 'list'
   subType: 'checkbox' | 'radio'
   name: string
@@ -61,11 +61,11 @@ export interface IFilterSchemaList {
   values: IFilterSchemaValue[]
 }
 
-export interface IFilterList extends IFilterSchemaList {
+interface IFilterList extends IFilterSchemaList {
   values: IFilterValue[]
 }
 
-export interface IFilterSchemaRange {
+interface IFilterSchemaRange {
   type: 'range'
   subType: 'range' | 'rangerange' // rangerange is when values themselves are ranges, eg a 1000-1500 scoville
   name: string
@@ -73,28 +73,29 @@ export interface IFilterSchemaRange {
   domain: [min: number, max: number] // total range of possible values
 }
 
-export interface IFilterRange extends IFilterSchemaRange {
+interface IFilterRange extends IFilterSchemaRange {
   active: [min: number, max: number]
 }
-export type IFilterSchema = IFilterSchemaList | IFilterSchemaRange
-export type IFilter = IFilterList | IFilterRange
+type IFilterSchema = IFilterSchemaList | IFilterSchemaRange
+type IFilter = IFilterList | IFilterRange
 
-export interface IActionIncrementCount {
-  type: 'INCREMENT'
-  payload: number
+interface IActionAddToWishlist {
+  type: 'ADD'
+  payload: string
 }
 
-export interface IActionSetCount {
-  type: 'SET_COUNT'
-  payload: number
+interface IActionRemoveFromWishlist {
+  type: 'REMOVE'
+  payload: string
 }
 
-export type IAction = IActionIncrementCount | IActionSetCount
+type IAction = IActionIncrementCount | IActionSetCount
 
-export interface IAppContext {
+interface IAppContext {
   state: IState
   actions: {
-    setCount: (amount: number) => void
-    incrementCount: (amount: number) => void
+    addToWishlist: (handle: string) => void
+    removeFromWishlist: (handle: string) => void
+    hydrate: (handles: string[]) => void
   }
 }
