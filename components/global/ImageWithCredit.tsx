@@ -2,6 +2,7 @@ import Image from 'next/image'
 import parse from 'html-react-parser'
 import LinkTo from './LinkTo'
 import { useState } from 'react'
+import ClientOnly from '../utility/ClientOnly'
 
 type Props = {
   src: string
@@ -28,24 +29,26 @@ const ImageWithCredit = (props: Props): JSX.Element => {
       ) : (
         <ImageComponent />
       )}
-      {credit && credit !== 'null' ? (
-        <caption className="prose prose-a:text-white prose-a:underline bg-slate-900 absolute right-0 top-0 text-white text-xs px-3 py-1 w-auto text-center">
-          {showCaption ? (
-            <>
-              {parse(credit)}{' '}
-              <button className="underline" onClick={() => setShowCaption(false)}>
-                Hide
+      <ClientOnly>
+        {credit && credit !== 'null' ? (
+          <div className="prose prose-a:text-white prose-a:underline bg-slate-900 absolute right-0 top-0 text-white text-xs px-3 py-1 w-auto text-center">
+            {showCaption ? (
+              <>
+                {parse(credit)}{' '}
+                <button className="underline" onClick={() => setShowCaption(false)}>
+                  Hide
+                </button>
+              </>
+            ) : (
+              <button className="underline" onClick={() => setShowCaption(true)}>
+                Show Attribution
               </button>
-            </>
-          ) : (
-            <button className="underline" onClick={() => setShowCaption(true)}>
-              Show Attribution
-            </button>
-          )}
-        </caption>
-      ) : (
-        ''
-      )}
+            )}
+          </div>
+        ) : (
+          ''
+        )}
+      </ClientOnly>
     </div>
   )
 }
