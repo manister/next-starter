@@ -5,7 +5,7 @@ const Document = (): JSX.Element => (
     <Head>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="crossorigin" />
-      <link href="https://fonts.googleapis.com/css2?family=Heebo&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:wght@300&family=Heebo&display=swap" rel="stylesheet" />
     </Head>
     <body>
       <Main />

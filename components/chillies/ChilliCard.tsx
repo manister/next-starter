@@ -1,44 +1,45 @@
-import Image from 'next/image'
 import React from 'react'
+import ImageWithCredit from '../global/ImageWithCredit'
 import LinkTo from '../global/LinkTo'
 
-import { useGlobalState } from '~/state/context'
+// import { useGlobalState } from '~/state/context'
 
 const ChilliCard = (props: IChilli): JSX.Element => {
   const { images, name, scoville, species, origin, handle } = props
   const defaultImage = images[0]
+  const url = defaultImage?.url ?? '/images/chilli-placeholder.jpg'
+  const alt = defaultImage?.url ?? 'No image available'
 
-  const { state, actions } = useGlobalState()
-  const { wishlist } = state
+  // const { state, actions } = useGlobalState()
+  // const { wishlist } = state
 
   return (
     <div className="w-1/1 h-1/1  overflow-hidden flex flex-col border-b-4 border-b-black border-x border-x-slate-300 border-t border-t-slate-300 bg-slate-100">
-      {defaultImage && (
-        <LinkTo tabIndex={-1} className="flex-grow block overflow-hidden " href={`/chillies/${props.handle}`}>
-          <Image
-            className="hover:scale-105 transition-transform"
-            width={600}
-            height={600}
-            alt={defaultImage.alt}
-            src={defaultImage.url ?? ''}
-          />
-        </LinkTo>
-      )}
+      <ImageWithCredit
+        href={`chillies/${handle}`}
+        credit={defaultImage?.attr}
+        className="hover:scale-105 transition-transform"
+        width={600}
+        height={600}
+        alt={alt}
+        src={url}
+      />
+
       <div className="p-4 mt-auto mb-2 ">
-        <LinkTo href={`/chillies/${props.handle}`}>
-          <h2 className="text-xl font-extrabold uppercase mb-2">{name}</h2>
+        <LinkTo href={`/chillies/${handle}`}>
+          <h2 className="text-xl font-extrabold uppercase mb-2 font-display">{name}</h2>
         </LinkTo>
 
-        {wishlist.has(handle) ? (
+        {/* {wishlist.has(handle) ? (
           <button onClick={() => actions.removeFromWishlist(handle)}>remove</button>
         ) : (
           <button onClick={() => actions.addToWishlist(handle)}>add</button>
-        )}
+        )} */}
 
         <div className="text-slate-600">
           {scoville && (
             <>
-              <span className="font-bold uppercase  tracking-wide">Heat: </span>
+              <span className="font-bold tracking-wide">🌶️ Heat: </span>
               <span className="italic">
                 {scoville[0]} - {scoville[1]} SHU
               </span>
@@ -47,7 +48,7 @@ const ChilliCard = (props: IChilli): JSX.Element => {
           {species.length > 0 && (
             //Make into component for species list
             <div>
-              <span className="font-bold uppercase tracking-wide">Species: </span>
+              <span className="font-bold tracking-wide">🍃 Species: </span>
               {species.map((item, index) => (
                 <React.Fragment key={item.handle}>
                   <LinkTo className="underline" href={`/chillies/species/${item.handle}`}>
@@ -62,7 +63,7 @@ const ChilliCard = (props: IChilli): JSX.Element => {
           {origin.length > 0 && (
             //Make into component for species list
             <div>
-              <span className="font-bold uppercase tracking-wide">Origins: </span>
+              <span className="font-bold tracking-wide">🌐 Origins: </span>
               {origin.map((item, index) => (
                 <React.Fragment key={item.handle}>
                   <LinkTo className="underline" href={`/chillies/origin/${item.handle}`}>

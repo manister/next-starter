@@ -13,10 +13,14 @@ const getCount = async (req: NextApiRequest, res: NextApiResponse): Promise<void
     res.status(405).send({ message: 'Only POST requests allowed' })
     return
   }
-  const body = JSON.parse(req.body) as IFilter[]
-  const filterFormula = filterArrayToAirtableFilter(body)
-  const chillies = await getChilliesFromAirtable({ filterFormula })
-  res.status(200).json(chillies.length)
+  try {
+    const body = JSON.parse(req.body) as IFilter[]
+    const filterFormula = filterArrayToAirtableFilter(body)
+    const chillies = await getChilliesFromAirtable({ filterFormula })
+    res.status(200).json(chillies.length)
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 export default getCount

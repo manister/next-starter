@@ -1,5 +1,5 @@
 import { filterSchemaMock } from '~/tests/mocks'
-import { arrShallowEq } from './data-helpers'
+import { arrShallowEq } from './dataHelpers'
 
 export const getFilterSchema = (): IFilterSchema[] => {
   //will have to come from real data

@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import { useGlobalState } from '~/state/context'
+import Nav from '../page/Nav'
 import Container from './Container'
 
 type Props = {
@@ -7,27 +6,9 @@ type Props = {
 }
 
 const Layout = ({ children }: Props): JSX.Element => {
-  const { state, actions } = useGlobalState()
-
-  useEffect(() => {
-    //on first load
-    let wishlistArr = []
-    try {
-      wishlistArr = JSON.parse(localStorage.getItem('wishlist') ?? '[]') as string[]
-      actions.hydrate(wishlistArr)
-    } catch (e) {
-      console.error(e)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    //when the wishlist updates, store it
-    const wishlistJSON = JSON.stringify([...state.wishlist])
-    localStorage.setItem('wishlist', wishlistJSON)
-  }, [state])
   return (
     <div className="text-gray-900 antialiased">
+      <Nav />
       <Container>
         <main>{children}</main>
       </Container>

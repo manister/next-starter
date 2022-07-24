@@ -99,3 +99,11 @@ interface IAppContext {
     hydrate: (handles: string[]) => void
   }
 }
+
+//page data
+
+type IChilliPageData = {
+  chillies: IChilli[]
+  requestType: 'listing' | 'handle' | null
+  filters: IFilter[]
+}

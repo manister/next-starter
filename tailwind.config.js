@@ -4,6 +4,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Heebo', 'sans-serif'],
+        display: ['Averia Libre', 'sans-serif'],
       },
       spacing: {
         '1/1': '100%',
@@ -45,5 +46,5 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [require('tailwindcss-filters')],
+  plugins: [require('tailwindcss-filters'), require('@tailwindcss/typography')],
 }

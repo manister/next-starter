@@ -22,8 +22,8 @@ const shapeChilliData = (el: any): IChilli => {
           handle: raw['colours/handle'][index],
           rgb: ['r', 'g', 'b'].map((char) => raw[`colours/${char}`][index] as number) as [number, number, number],
         }
-      } catch (e) {
-        console.error(e)
+      } catch (error) {
+        console.error('Error parsing colour data from airtable', { error })
         return []
       }
     }),
@@ -33,8 +33,8 @@ const shapeChilliData = (el: any): IChilli => {
           name: raw['species/name'][index],
           handle: raw['species/handle'][index],
         }
-      } catch (e) {
-        console.error(e)
+      } catch (error) {
+        console.error('Error parsing species data from airtable', { error })
         return []
       }
     }),
@@ -45,8 +45,8 @@ const shapeChilliData = (el: any): IChilli => {
           attr: raw['image/attr'][index],
           ...raw['image/data'][index],
         }
-      } catch (e) {
-        console.error(e)
+      } catch (error) {
+        console.error('Error parsing image data from airtable', { error })
         return []
       }
     }),
@@ -62,14 +62,16 @@ const shapeChilliData = (el: any): IChilli => {
                 attr: raw['origin/image/attribution'][i],
                 ...raw['origin/image/data'][i],
               }
-            } catch (e) {
-              console.error(e)
+            } catch (error) {
+              console.error('Error parsing origin image data from airtable', { error })
+
               return []
             }
           }),
         }
-      } catch (e) {
-        console.error(e)
+      } catch (error) {
+        console.error('Error parsing origin data from airtable', { error })
+
         return []
       }
     }),
@@ -110,13 +112,13 @@ export const getChilliesFromAirtable = async (opts: IGetChilliesOpts = { view: '
       try {
         return shapeChilliData(record)
       } catch (e) {
-        console.error(e)
+        console.error(`Could not shape chilli data`, e)
         return []
       }
     })
     return chillies
   } catch (e) {
-    console.error(e)
+    console.error(`Could not fetch ${endpoint.toString()}`, e)
     return []
   }
 }

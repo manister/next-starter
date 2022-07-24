@@ -31,7 +31,13 @@ const ChilliFilters = (props: Props): JSX.Element => {
   }, [debouncedFilters])
 
   return (
-    <>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        const path = `/chillies/${filterArrayToPathArray(currentFilters).flat().join('/')}`
+        router.push(path)
+      }}
+    >
       {currentFilters.map((filter, index) => {
         if (filter.type === 'list') {
           return (
@@ -48,8 +54,9 @@ const ChilliFilters = (props: Props): JSX.Element => {
                         }}
                         type={'checkbox'}
                         checked={option.active}
+                        id={option.value}
                       />
-                      <label>{option.displayValue}</label>
+                      <label htmlFor={option.value}>{option.displayValue}</label>
                     </li>
                   )
                 })}
@@ -92,16 +99,10 @@ const ChilliFilters = (props: Props): JSX.Element => {
         }
         return null
       })}
-      <button
-        disabled={count === 0}
-        onClick={() => {
-          const path = `/chillies/${filterArrayToPathArray(currentFilters).flat().join('/')}`
-          router.push(path)
-        }}
-      >
+      <button disabled={count === 0} type="submit">
         Apply {count !== null ? `(${count})` : ''}
       </button>
-    </>
+    </form>
   )
 }
 

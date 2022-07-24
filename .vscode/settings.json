@@ -3,5 +3,6 @@
   "workbench.colorCustomizations": {
     "list.errorForeground": "#ff0000",
     "list.warningForeground": "#FFFF00"
-  }
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

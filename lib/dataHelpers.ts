@@ -12,3 +12,5 @@ export const chunk = <T>(arr: T[]): [T, T][] => {
 export const arrShallowEq = <T>(arr1: T[], arr2: T[]): boolean => {
   return arr1.every((item, i) => item === arr2[i])
 }
+
+export const shuffle = <T>(array: T[]): T[] => array.sort(() => Math.random() - 0.5)
