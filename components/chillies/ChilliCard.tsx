@@ -1,6 +1,7 @@
 import React from 'react'
 import ImageWithCredit from '../global/ImageWithCredit'
 import LinkTo from '../global/LinkTo'
+import Emoji from '../global/Emoji'
 
 // import { useGlobalState } from '~/state/context'
 
@@ -39,7 +40,9 @@ const ChilliCard = (props: IChilli): JSX.Element => {
         <div className="text-slate-600">
           {scoville && (
             <>
-              <span className="font-bold tracking-wide">🌶️ Heat: </span>
+              <span className="font-bold tracking-wide">
+                <Emoji src="🌶️" /> Heat:{' '}
+              </span>
               <span className="italic">
                 {scoville[0]} - {scoville[1]} SHU
               </span>
@@ -48,7 +51,9 @@ const ChilliCard = (props: IChilli): JSX.Element => {
           {species.length > 0 && (
             //Make into component for species list
             <div>
-              <span className="font-bold tracking-wide">🍃 Species: </span>
+              <span className="font-bold tracking-wide">
+                <Emoji src="🍃" /> Species:{' '}
+              </span>
               {species.map((item, index) => (
                 <React.Fragment key={item.handle}>
                   <LinkTo className="underline" href={`/chillies/species/${item.handle}`}>
@@ -63,7 +68,9 @@ const ChilliCard = (props: IChilli): JSX.Element => {
           {origin.length > 0 && (
             //Make into component for species list
             <div>
-              <span className="font-bold tracking-wide">🌐 Origins: </span>
+              <span className="font-bold tracking-wide">
+                <Emoji src="🌐" /> Origins:{' '}
+              </span>
               {origin.map((item, index) => (
                 <React.Fragment key={item.handle}>
                   <LinkTo className="underline" href={`/chillies/origin/${item.handle}`}>

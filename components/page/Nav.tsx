@@ -1,9 +1,11 @@
+import Emoji from '../global/Emoji'
 import LinkTo from '../global/LinkTo'
 
 import Container from '../layout/Container'
 import Logo from './Logo'
 
 interface INavLink {
+  emoji: string
   text: string
   href: string
   id: string
@@ -11,12 +13,14 @@ interface INavLink {
 
 const navLinks: INavLink[] = [
   {
-    text: '🌶️ Cultivars',
+    emoji: '🫑',
+    text: 'Cultivars',
     href: '/chillies',
     id: 'chillies',
   },
   {
-    text: '📖 Guides',
+    emoji: '📖',
+    text: 'Guides',
     href: '/guides',
     id: 'guides',
   },
@@ -32,7 +36,7 @@ const Nav = (): JSX.Element => (
         {navLinks.map((link) => (
           <li className="px-2" key={link.id}>
             <LinkTo className="font-semibold text-slate-900 hover:underline" href={link.href}>
-              {link.text}
+              <Emoji src={link.emoji} /> {link.text}
             </LinkTo>
           </li>
         ))}
