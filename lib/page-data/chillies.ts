@@ -6,7 +6,8 @@ export const getChilliPaDataFromPaths = async (paths: string[]): Promise<IChilli
   let chillies: IChilli[] = []
   let requestType: IChilliPageData['requestType'] = null
 
-  const schema = getFilterSchema()
+  const schema = await getFilterSchema()
+
   let filters = pathArrayToFilterArray([], schema)
 
   try {
@@ -37,7 +38,7 @@ export const getChilliPaDataFromPaths = async (paths: string[]): Promise<IChilli
 
       const filterFormula = requestType === 'listing' ? filterArrayToAirtableFilter(filters) : `{handle}="${paths[0]}"`
       const data = await getChilliesFromAirtable({ filterFormula, ...(sort ? { sort } : {}) })
-      // console.log({ data, filterFormula })
+
       chillies = data
     }
   } catch (e) {

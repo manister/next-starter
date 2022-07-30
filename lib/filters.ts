@@ -1,9 +1,50 @@
-import { filterSchemaMock } from '~/tests/mocks'
+import { getBasicDataFromAirtable } from './airtable'
 import { arrShallowEq } from './dataHelpers'
 
-export const getFilterSchema = (): IFilterSchema[] => {
-  //will have to come from real data
-  return filterSchemaMock
+const airtableDataToTextFilter = (data: IOrigin[] | ISpecies[] | IColour[]): IFilterSchemaTextValue[] => {
+  return data.map((val) => ({
+    value: val.handle,
+    displayValue: val.name,
+    displayType: 'text',
+  }))
+}
+
+export const getFilterSchema = async (): Promise<IFilterSchema[]> => {
+  const species = await getBasicDataFromAirtable('species')
+  const origins = await getBasicDataFromAirtable('origins')
+  const colours = await getBasicDataFromAirtable('colours')
+
+  const filterSchema = [
+    {
+      type: 'list',
+      name: 'species',
+      displayName: 'Species',
+      displayType: 'text',
+      values: airtableDataToTextFilter(species),
+    },
+    {
+      type: 'list',
+      name: 'origin',
+      displayName: 'Origin',
+      displayType: 'text',
+      values: airtableDataToTextFilter(origins),
+    },
+    {
+      type: 'list',
+      name: 'colour',
+      displayName: 'Colours',
+      displayType: 'text',
+      values: airtableDataToTextFilter(colours),
+    },
+    {
+      type: 'range',
+      subType: 'rangerange',
+      name: 'scoville',
+      displayName: 'Scoville',
+      domain: [0, 2200000],
+    },
+  ] as IFilterSchema[]
+  return filterSchema
 }
 
 /*

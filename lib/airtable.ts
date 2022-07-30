@@ -2,6 +2,22 @@ const headers = {
   Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
 }
 
+interface IEndPoints {
+  cultivars: URL
+  origins: URL
+  species: URL
+  colours: URL
+}
+
+const endpoints: IEndPoints | null = process.env.AIRTABLE_ENDPOINT
+  ? {
+      cultivars: new URL(`${process.env.AIRTABLE_ENDPOINT}/Cultivars`),
+      origins: new URL(`${process.env.AIRTABLE_ENDPOINT}/Location`),
+      species: new URL(`${process.env.AIRTABLE_ENDPOINT}/Species`),
+      colours: new URL(`${process.env.AIRTABLE_ENDPOINT}/Colours`),
+    }
+  : null
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const shapeChilliData = (el: any): IChilli => {
   const raw = el.fields
@@ -78,6 +94,57 @@ const shapeChilliData = (el: any): IChilli => {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const shapeOriginData = (el: any): IOrigin => {
+  const raw = el.fields
+  if (!raw.name || !raw.handle) {
+    throw new Error('Origin must have a name and a handle')
+  }
+
+  return {
+    name: raw.name,
+    handle: raw.handle,
+    images: ((raw['image'] ?? []) as unknown[]).flatMap((_image, i) => {
+      try {
+        return {
+          alt: raw['image/alt'][i],
+          attr: raw['image/attribution'][i],
+          ...raw['image/data'][i],
+        }
+      } catch (error) {
+        console.error('Error parsing origin image data from airtable', { error })
+        return []
+      }
+    }),
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const shapeSpeciesData = (el: any): ISpecies => {
+  const raw = el.fields
+  if (!raw.name || !raw.handle) {
+    throw new Error('Species must have a name and a handle')
+  }
+  return {
+    name: raw.name,
+    handle: raw.handle,
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const shapeColourData = (el: any): IColour => {
+  const raw = el.fields
+  if (!raw.name || !raw.handle) {
+    throw new Error('Colour must have a name and a handle')
+  }
+
+  return {
+    name: raw.name,
+    handle: raw.handle,
+    rgb: ['r', 'g', 'b'].map((char) => raw[`${char}`] as number) as [number, number, number],
+  }
+}
+
 interface IGetChilliesOpts {
   filterFormula?: string
   view?: 'All'
@@ -87,8 +154,6 @@ interface IGetChilliesOpts {
   }
 }
 
-const endpoint = new URL(process.env.AIRTABLE_ENDPOINT as string)
-
 export const getChilliesFromAirtable = async (opts: IGetChilliesOpts = { view: 'All' }): Promise<IChilli[]> => {
   const view = opts?.view ?? 'All'
 
@@ -96,6 +161,12 @@ export const getChilliesFromAirtable = async (opts: IGetChilliesOpts = { view: '
     direction: 'asc',
     field: 'name',
   }
+  if (!endpoints) {
+    console.error('Check that the AIRTABLE_ENDPOINT is set in your env.')
+    return []
+  }
+
+  const endpoint = endpoints['cultivars']
 
   endpoint.searchParams.set('view', view)
 
@@ -117,6 +188,48 @@ export const getChilliesFromAirtable = async (opts: IGetChilliesOpts = { view: '
       }
     })
     return chillies
+  } catch (e) {
+    console.error(`Could not fetch ${endpoint.toString()}`, e)
+    return []
+  }
+}
+
+type IDataKeys = 'colours' | 'origins' | 'species'
+
+type IDataType<T> = T extends 'colours' ? IColour : T extends 'origins' ? IOrigin : T extends 'species' ? ISpecies : never
+
+const shaper = <T extends IDataKeys>(dataKey: T, record: unknown): IDataType<T> => {
+  switch (dataKey as IDataKeys) {
+    case 'colours':
+      return shapeColourData(record) as IDataType<T>
+    case 'origins':
+      return shapeOriginData(record) as IDataType<T>
+    case 'species':
+      return shapeSpeciesData(record) as IDataType<T>
+  }
+}
+
+export const getBasicDataFromAirtable = async <T extends IDataKeys>(key: T): Promise<IDataType<T>[]> => {
+  if (!endpoints) {
+    console.error('Check that the AIRTABLE_ENDPOINT is set in your env.')
+    return []
+  }
+  const endpoint = endpoints[key]
+
+  try {
+    const res = await fetch(endpoint.toString(), { headers })
+    const data = await res.json()
+    if (data.records.length < 1) return []
+    const items = (data.records as unknown[]).flatMap((record) => {
+      try {
+        const item = shaper(key, record)
+        return [item]
+      } catch (e) {
+        console.error(`Could not shape ${key} data`, e)
+        return []
+      }
+    })
+    return items
   } catch (e) {
     console.error(`Could not fetch ${endpoint.toString()}`, e)
     return []

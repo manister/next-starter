@@ -17,7 +17,7 @@ const ChilliCard = (props: IChilli): JSX.Element => {
   return (
     <div className="w-1/1 h-1/1  overflow-hidden flex flex-col border-b-4 border-b-black border-x border-x-slate-300 border-t border-t-slate-300 bg-slate-100">
       <ImageWithCredit
-        href={`chillies/${handle}`}
+        href={`/chillies/${handle}`}
         credit={defaultImage?.attr}
         className="hover:scale-105 transition-transform"
         width={600}

@@ -43,27 +43,57 @@ interface IOrigin {
 interface IState {
   wishlist: Set<string>
 }
-
-interface IFilterSchemaValue {
+interface IFilterBaseValue {
   value: string
   displayValue: string
 }
 
-interface IFilterValue extends IFilterSchemaValue {
+interface IFilterSchemaColourValue extends IFilterBaseValue {
+  displayType: 'colour'
+  rgb: [number, number, number]
+}
+
+interface IFilterSchemaTextValue extends IFilterBaseValue {
+  displayType: 'text'
+}
+
+type IFilterSchemaValue = IFilterSchemaColourValue | IFilterSchemaTextValue
+
+interface IFilterColourValue extends IFilterColourSchemaValue {
   active: boolean
 }
 
-interface IFilterSchemaList {
-  type: 'list'
-  subType: 'checkbox' | 'radio'
-  name: string
-  displayName: string
-  values: IFilterSchemaValue[]
+interface IFilterTextValue extends IFilterTextSchemaValue {
+  active: boolean
 }
 
-interface IFilterList extends IFilterSchemaList {
+interface IFilterBaseList {
+  type: 'list'
+  name: string
+  displayName: string
+}
+
+interface IFilterSchemaColourList extends IFilterBaseList {
+  displayType: 'colour'
+  values: IFilterSchemaColourValue[]
+}
+
+interface IFilterColourList extends IFilterSchemaColourList {
   values: IFilterValue[]
 }
+
+interface IFilterSchemaTextList extends IFilterBaseList {
+  displayType: 'text'
+  values: IFilterSchemaTextValue[]
+}
+
+interface IFilterTextList extends IFilterSchemaTextList {
+  values: IFilterTextValue[]
+}
+
+type IFilterSchemaList = IFilterSchemaColourList | IFilterSchemaTextList
+
+type IFilterList = IFilterColourList | IFilterTextList
 
 interface IFilterSchemaRange {
   type: 'range'
