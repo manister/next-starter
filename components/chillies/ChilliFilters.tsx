@@ -21,6 +21,10 @@ const ChilliFilters = (props: Props): JSX.Element => {
   const [count, setCount] = useState(null as null | number)
 
   useEffect(() => {
+    setCurrentFilters(filters)
+  }, [filters])
+
+  useEffect(() => {
     fetch('/api/count', {
       method: 'POST',
       body: JSON.stringify(debouncedFilters),
@@ -43,6 +47,7 @@ const ChilliFilters = (props: Props): JSX.Element => {
         if (filter.type === 'list') {
           return (
             <ListFilter
+              key={filter.name}
               filter={filter}
               onChange={(optionIndex, value) => {
                 const newFilters = updateListFilter(currentFilters, index, optionIndex, value)
@@ -54,6 +59,7 @@ const ChilliFilters = (props: Props): JSX.Element => {
         if (filter.type === 'range') {
           return (
             <RangeFilter
+              key={filter.name}
               filter={filter}
               sliderChange={(val) => {
                 const newFilters = updateRangeFilter(currentFilters, index, val as [number, number])

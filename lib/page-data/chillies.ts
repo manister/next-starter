@@ -2,7 +2,7 @@ import { getChilliesFromAirtable } from '../airtable'
 import { chunk } from '../dataHelpers'
 import { filterArrayToAirtableFilter, getFilterSchema, pathArrayToFilterArray } from '../filters'
 
-export const getChilliPaDataFromPaths = async (paths: string[]): Promise<IChilliPageData> => {
+export const getChilliPageDataFromPaths = async (paths: string[]): Promise<IChilliPageData> => {
   let chillies: IChilli[] = []
   let requestType: IChilliPageData['requestType'] = null
 
@@ -11,7 +11,7 @@ export const getChilliPaDataFromPaths = async (paths: string[]): Promise<IChilli
   let filters = pathArrayToFilterArray([], schema)
 
   try {
-    if (paths.length == 0) {
+    if (paths.length === 0) {
       //no paths, load all chillies
       requestType = 'listing'
       chillies = await getChilliesFromAirtable()

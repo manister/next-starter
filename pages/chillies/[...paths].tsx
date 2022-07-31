@@ -8,7 +8,7 @@ import ChilliListing from '~/components/chillies/ChillisListing'
 import FullChilliProfile from '~/components/chillies/FullChilliProfile'
 import Layout from '~/components/layout/Layout'
 import { getChilliesFromAirtable } from '~/lib/airtable'
-import { getChilliPaDataFromPaths } from '~/lib/page-data/chillies'
+import { getChilliPageDataFromPaths } from '~/lib/page-data/chillies'
 
 type Props = IChilliPageData
 
@@ -18,6 +18,7 @@ interface IParams extends ParsedUrlQuery {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = await getChilliesFromAirtable()
+
   const paths = data.map(({ handle }) => {
     return { params: { paths: [handle] } }
   })
@@ -26,7 +27,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { paths } = params as IParams
-  const { chillies, requestType, filters } = await getChilliPaDataFromPaths(paths ?? [])
+  const { chillies, requestType, filters } = await getChilliPageDataFromPaths(paths ?? [])
   return {
     props: {
       chillies,
@@ -34,7 +35,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       filters,
     },
     notFound: requestType === 'handle' && (!chillies || chillies.length < 1),
-    revalidate: 10,
+    revalidate: false,
   }
 }
 
