@@ -19,6 +19,16 @@ const ChilliFilters = (props: Props): JSX.Element => {
 
   const [currentFilters, setCurrentFilters] = useState(filters)
 
+  useEffect(() => {
+    const onKeyUp = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') {
+        setOpen(false)
+      }
+    }
+    window.addEventListener('keyup', onKeyUp)
+    return () => window.removeEventListener('keyup', onKeyUp)
+  }, [setOpen])
+
   const [debouncedFilters] = useDebounce(currentFilters, 300, { leading: true, maxWait: 1500 })
 
   const [count, setCount] = useState(null as null | number)
@@ -46,50 +56,56 @@ const ChilliFilters = (props: Props): JSX.Element => {
         }`}
       >
         <form
+          className="h-1/1 flex flex-col"
           onSubmit={(e) => {
             e.preventDefault()
             const path = `/chillies/${filterArrayToPathArray(currentFilters).flat().join('/')}`
             router.push(path)
           }}
         >
-          {currentFilters.map((filter, index) => {
-            if (filter.type === 'list') {
-              return (
-                <ListFilter
-                  key={filter.name}
-                  filter={filter}
-                  onChange={(optionIndex, value) => {
-                    const newFilters = updateListFilter(currentFilters, index, optionIndex, value)
-                    setCurrentFilters(newFilters)
-                  }}
-                />
-              )
-            }
-            if (filter.type === 'range') {
-              return (
-                <RangeFilter
-                  key={filter.name}
-                  filter={filter}
-                  sliderChange={(val) => {
-                    const newFilters = updateRangeFilter(currentFilters, index, val as [number, number])
-                    setCurrentFilters(newFilters)
-                  }}
-                  minChange={(val) => {
-                    const newFilters = updateRangeFilter(currentFilters, index, [val, null])
-                    setCurrentFilters(newFilters)
-                  }}
-                  maxChange={(val) => {
-                    const newFilters = updateRangeFilter(currentFilters, index, [null, val])
-                    setCurrentFilters(newFilters)
-                  }}
-                />
-              )
-            }
-            return null
-          })}
-          <div className="fixed bottom-0 left-0  bg-white p-1">
+          <ul>
+            {currentFilters.map((filter, index) => {
+              if (filter.type === 'list') {
+                return (
+                  <li key={filter.name} className="border-b-2 border-slate-200">
+                    <ListFilter
+                      filter={filter}
+                      onChange={(optionIndex, value) => {
+                        const newFilters = updateListFilter(currentFilters, index, optionIndex, value)
+                        setCurrentFilters(newFilters)
+                      }}
+                    />
+                  </li>
+                )
+              }
+              if (filter.type === 'range') {
+                return (
+                  <li key={filter.name} className="border-b-2 border-slate-200">
+                    <RangeFilter
+                      key={filter.name}
+                      filter={filter}
+                      sliderChange={(val) => {
+                        const newFilters = updateRangeFilter(currentFilters, index, val as [number, number])
+                        setCurrentFilters(newFilters)
+                      }}
+                      minChange={(val) => {
+                        const newFilters = updateRangeFilter(currentFilters, index, [val, null])
+                        setCurrentFilters(newFilters)
+                      }}
+                      maxChange={(val) => {
+                        const newFilters = updateRangeFilter(currentFilters, index, [null, val])
+                        setCurrentFilters(newFilters)
+                      }}
+                    />
+                  </li>
+                )
+              }
+              return null
+            })}
+          </ul>
+          <div className="sticky bottom-0 w-1/1  bg-white p-3 mt-auto">
             <Button variant="primary">
-              <button disabled={count === 0} type="submit">
+              <button onClick={() => setOpen(false)} className="w-1/1" disabled={count === 0} type="submit">
                 Apply {count !== null ? `(${count})` : ''}
               </button>
             </Button>

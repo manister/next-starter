@@ -14,10 +14,12 @@ const ChilliListing = (props: Props): JSX.Element => {
 
   return (
     <>
-      <button type="button" onClick={() => setFiltersOpen(!filtersOpen)}>
-        Filters
-      </button>
-      {filtersOpen}
+      {filters && (
+        <button type="button" onClick={() => setFiltersOpen(!filtersOpen)}>
+          Filters
+        </button>
+      )}
+
       {filters && <ChilliFilters setOpen={(val) => setFiltersOpen(val)} open={filtersOpen} filters={filters} />}
       <ul className="flex flex-wrap">
         {chillies.map((chilli) => (

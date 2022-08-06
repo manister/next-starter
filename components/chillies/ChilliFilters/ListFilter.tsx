@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-// import { filterArrayToPathArray, updateListFilter, updateRangeFilter } from '~/lib/filters'
+import FilterButton from './FilterButton'
 
 interface Props {
   filter: IFilterList
@@ -11,28 +11,31 @@ const ListFilter = (props: Props): JSX.Element => {
   const [open, setOpen] = useState(false)
 
   return (
-    <div key={filter.name}>
-      <button onClick={() => setOpen(!open)} type="button">
+    <>
+      <FilterButton open={open} onClick={() => setOpen(!open)}>
         {filter.displayName}
-      </button>
+      </FilterButton>
       {open ? (
-        <ul>
+        <ul className="px-3 mb-3">
           {filter.values.map((option, optionIndex) => {
             return (
-              <li key={option.value}>
+              <li key={option.value} className="mb-1">
                 <input
+                  className="mr-1"
                   onChange={(e) => onChange(optionIndex, e.target.checked)}
                   type={'checkbox'}
                   checked={option.active}
                   id={option.value}
                 />
-                <label htmlFor={option.value}>{option.displayValue}</label>
+                <label className="select-none" htmlFor={option.value}>
+                  {option.displayValue}
+                </label>
               </li>
             )
           })}
         </ul>
       ) : null}
-    </div>
+    </>
   )
 }
 export default ListFilter

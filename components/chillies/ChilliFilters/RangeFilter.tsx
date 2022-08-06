@@ -2,6 +2,7 @@ import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
 import React, { useState } from 'react'
+import FilterButton from './FilterButton'
 
 interface Props {
   filter: IFilterRange
@@ -26,9 +27,9 @@ const RangeFilter = (props: Props): JSX.Element => {
   const [open, setOpen] = useState(false)
   return (
     <React.Fragment key={filter.name}>
-      <button onClick={() => setOpen(!open)} type="button">
+      <FilterButton open={open} onClick={() => setOpen(!open)}>
         {filter.displayName}
-      </button>
+      </FilterButton>
       {open ? (
         <>
           <Slider
