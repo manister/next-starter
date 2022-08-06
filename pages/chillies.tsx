@@ -1,7 +1,8 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 
-import React from 'react'
+import React, { useState } from 'react'
+import ChilliFilters from '~/components/chillies/ChilliFilters'
 
 import ChilliListing from '~/components/chillies/ChillisListing'
 import Layout from '~/components/layout/Layout'
@@ -22,13 +23,15 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const ChilliPage = ({ chillies, filters }: Props): JSX.Element => {
   return (
-    <Layout>
-      <Head>
-        <title>{`Chillies`}</title>
-      </Head>
-      <p>Chillies</p>
-      <ChilliListing filters={filters} chillies={chillies} />
-    </Layout>
+    <>
+      <Layout>
+        <Head>
+          <title>{`Chillies`}</title>
+        </Head>
+        <p>Chillies</p>
+        <ChilliListing filters={filters} chillies={chillies} />
+      </Layout>
+    </>
   )
 }
 

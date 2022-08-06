@@ -5,13 +5,16 @@ import { filterArrayToPathArray, updateListFilter, updateRangeFilter } from '~/l
 import { useDebounce } from 'use-debounce'
 import ListFilter from './ChilliFilters/ListFilter'
 import RangeFilter from './ChilliFilters/RangeFilter'
+import Button from '../global/Button'
 
 type Props = {
+  open: boolean
   filters: IFilter[]
+  setOpen: (value: boolean) => void
 }
 
 const ChilliFilters = (props: Props): JSX.Element => {
-  const { filters } = props
+  const { filters, open, setOpen } = props
   const router = useRouter()
 
   const [currentFilters, setCurrentFilters] = useState(filters)
@@ -36,52 +39,70 @@ const ChilliFilters = (props: Props): JSX.Element => {
   }, [debouncedFilters])
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault()
-        const path = `/chillies/${filterArrayToPathArray(currentFilters).flat().join('/')}`
-        router.push(path)
-      }}
-    >
-      {currentFilters.map((filter, index) => {
-        if (filter.type === 'list') {
-          return (
-            <ListFilter
-              key={filter.name}
-              filter={filter}
-              onChange={(optionIndex, value) => {
-                const newFilters = updateListFilter(currentFilters, index, optionIndex, value)
-                setCurrentFilters(newFilters)
-              }}
-            />
-          )
-        }
-        if (filter.type === 'range') {
-          return (
-            <RangeFilter
-              key={filter.name}
-              filter={filter}
-              sliderChange={(val) => {
-                const newFilters = updateRangeFilter(currentFilters, index, val as [number, number])
-                setCurrentFilters(newFilters)
-              }}
-              minChange={(val) => {
-                const newFilters = updateRangeFilter(currentFilters, index, [val, null])
-                setCurrentFilters(newFilters)
-              }}
-              maxChange={(val) => {
-                const newFilters = updateRangeFilter(currentFilters, index, [null, val])
-                setCurrentFilters(newFilters)
-              }}
-            />
-          )
-        }
-        return null
-      })}
-      <button disabled={count === 0} type="submit">
-        Apply {count !== null ? `(${count})` : ''}
-      </button>
-    </form>
+    <>
+      <div
+        className={`h-full overflow-auto w-1/1 md:max-w-[400px] h-100 fixed left-0 top-0 bottom-0 z-20 bg-white transition-transform ${
+          open ? '' : 'translate-x-[-100%]'
+        }`}
+      >
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            const path = `/chillies/${filterArrayToPathArray(currentFilters).flat().join('/')}`
+            router.push(path)
+          }}
+        >
+          {currentFilters.map((filter, index) => {
+            if (filter.type === 'list') {
+              return (
+                <ListFilter
+                  key={filter.name}
+                  filter={filter}
+                  onChange={(optionIndex, value) => {
+                    const newFilters = updateListFilter(currentFilters, index, optionIndex, value)
+                    setCurrentFilters(newFilters)
+                  }}
+                />
+              )
+            }
+            if (filter.type === 'range') {
+              return (
+                <RangeFilter
+                  key={filter.name}
+                  filter={filter}
+                  sliderChange={(val) => {
+                    const newFilters = updateRangeFilter(currentFilters, index, val as [number, number])
+                    setCurrentFilters(newFilters)
+                  }}
+                  minChange={(val) => {
+                    const newFilters = updateRangeFilter(currentFilters, index, [val, null])
+                    setCurrentFilters(newFilters)
+                  }}
+                  maxChange={(val) => {
+                    const newFilters = updateRangeFilter(currentFilters, index, [null, val])
+                    setCurrentFilters(newFilters)
+                  }}
+                />
+              )
+            }
+            return null
+          })}
+          <div className="fixed bottom-0 left-0  bg-white p-1">
+            <Button variant="primary">
+              <button disabled={count === 0} type="submit">
+                Apply {count !== null ? `(${count})` : ''}
+              </button>
+            </Button>
+          </div>
+        </form>
+      </div>
+      {open ? (
+        <button
+          onClick={() => setOpen(false)}
+          className="fixed top-0 right-0 bottom-0 left-0 block bg-black opacity-20 z-10 cursor-auto"
+        ></button>
+      ) : null}
+    </>
   )
 }
 

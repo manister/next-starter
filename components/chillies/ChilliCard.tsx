@@ -41,7 +41,7 @@ const ChilliCard = (props: IChilli): JSX.Element => {
           {scoville && (
             <>
               <span className="font-bold tracking-wide">
-                <Emoji src="🌶️" /> Heat:{' '}
+                <Emoji src="🔥" /> Heat:{' '}
               </span>
               <span className="italic">
                 {scoville[0]} - {scoville[1]} SHU

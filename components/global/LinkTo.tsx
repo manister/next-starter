@@ -24,7 +24,6 @@ const LinkTo = ({
   return (
     // These props are lifted up to the `Link` element. All others are passed to the `<a>`
     <Link {...{ href, as, replace, scroll, shallow, prefetch, locale }}>
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <a {...anchorProps}>{children}</a>
     </Link>
   )
