@@ -50,11 +50,14 @@ const ChilliFilters = (props: Props): JSX.Element => {
 
   return (
     <>
-      <div
+      <aside
         className={`h-full overflow-auto w-1/1 md:max-w-[400px] h-100 fixed left-0 top-0 bottom-0 z-20 bg-white transition-transform ${
           open ? '' : 'translate-x-[-100%]'
         }`}
       >
+        <header className="p-3 text-center border-b-2">
+          <h3 className="text-xlg">Filters</h3>
+        </header>
         <form
           className="h-1/1 flex flex-col"
           onSubmit={(e) => {
@@ -111,7 +114,7 @@ const ChilliFilters = (props: Props): JSX.Element => {
             </Button>
           </div>
         </form>
-      </div>
+      </aside>
       {open ? (
         <button
           onClick={() => setOpen(false)}

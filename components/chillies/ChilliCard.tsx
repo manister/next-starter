@@ -17,7 +17,7 @@ const ChilliCard = (props: IChilli): JSX.Element => {
   return (
     <div className="w-1/1 h-1/1  overflow-hidden flex flex-col border-b-4 border-b-black border-x border-x-slate-300 border-t border-t-slate-300 bg-slate-100">
       <ImageWithCredit
-        href={`/chillies/${handle}`}
+        // href={`/chillies/${handle}`}
         credit={defaultImage?.attr}
         className="hover:scale-105 transition-transform"
         width={600}
@@ -27,9 +27,9 @@ const ChilliCard = (props: IChilli): JSX.Element => {
       />
 
       <div className="p-4 mt-auto mb-2 ">
-        <LinkTo href={`/chillies/${handle}`}>
-          <h2 className="text-xl font-extrabold uppercase mb-2 font-display">{name}</h2>
-        </LinkTo>
+        {/* <LinkTo href={`/chillies/${handle}`}> */}
+        <h2 className="text-xl font-extrabold uppercase mb-2 font-display">{name}</h2>
+        {/* </LinkTo> */}
 
         {/* {wishlist.has(handle) ? (
           <button onClick={() => actions.removeFromWishlist(handle)}>remove</button>

@@ -34,7 +34,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       requestType,
       filters,
     },
-    notFound: requestType === 'handle' && (!chillies || chillies.length < 1),
+    notFound: requestType === 'handle',
+    // notFound: requestType === 'handle' && (!chillies || chillies.length < 1),
     revalidate: false,
   }
 }
@@ -44,9 +45,8 @@ const ChilliPage = ({ chillies, requestType, filters }: Props): JSX.Element => {
     return (
       <Layout>
         <Head>
-          <title>{`${chillies.length} Chillies Found`}</title>
+          <title>{`${chillies.length} Peppers Found`}</title>
         </Head>
-        <p>{chillies.length} Chillies Found</p>
         <ChilliListing filters={filters} chillies={chillies} />
       </Layout>
     )

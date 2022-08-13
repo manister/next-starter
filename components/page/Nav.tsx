@@ -18,12 +18,12 @@ const navLinks: INavLink[] = [
     href: '/chillies',
     id: 'chillies',
   },
-  {
-    emoji: '📖',
-    text: 'Guides',
-    href: '/guides',
-    id: 'guides',
-  },
+  // {
+  //   emoji: '📖',
+  //   text: 'About',
+  //   href: '/guides',
+  //   id: 'guides',
+  // },
 ]
 
 const Nav = (): JSX.Element => (

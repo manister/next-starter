@@ -1,8 +1,7 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 
-import React, { useState } from 'react'
-import ChilliFilters from '~/components/chillies/ChilliFilters'
+import React from 'react'
 
 import ChilliListing from '~/components/chillies/ChillisListing'
 import Layout from '~/components/layout/Layout'
@@ -28,7 +27,6 @@ const ChilliPage = ({ chillies, filters }: Props): JSX.Element => {
         <Head>
           <title>{`Chillies`}</title>
         </Head>
-        <p>Chillies</p>
         <ChilliListing filters={filters} chillies={chillies} />
       </Layout>
     </>
