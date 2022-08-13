@@ -398,7 +398,6 @@ const Page: React.FunctionComponent = () => (
         <h3>Contact Us</h3>
         <p>For any questions or concerns regarding your privacy, you may contact us using the following details: </p>
         <p>
-          Harry Manister
           <br />
           admin@pepper.town{' '}
         </p>
