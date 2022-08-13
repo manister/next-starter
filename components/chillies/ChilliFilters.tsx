@@ -82,26 +82,28 @@ const ChilliFilters = (props: Props): JSX.Element => {
                 )
               }
               if (filter.type === 'range') {
-                return (
-                  <li key={filter.name} className="border-b-2 border-slate-200">
-                    <RangeFilter
-                      key={filter.name}
-                      filter={filter}
-                      sliderChange={(val) => {
-                        const newFilters = updateRangeFilter(currentFilters, index, val as [number, number])
-                        setCurrentFilters(newFilters)
-                      }}
-                      minChange={(val) => {
-                        const newFilters = updateRangeFilter(currentFilters, index, [val, null])
-                        setCurrentFilters(newFilters)
-                      }}
-                      maxChange={(val) => {
-                        const newFilters = updateRangeFilter(currentFilters, index, [null, val])
-                        setCurrentFilters(newFilters)
-                      }}
-                    />
-                  </li>
-                )
+                return null
+                //TODO: range filter final work
+                // return (
+                //   <li key={filter.name} className="border-b-2 border-slate-200">
+                //     <RangeFilter
+                //       key={filter.name}
+                //       filter={filter}
+                //       sliderChange={(val) => {
+                //         const newFilters = updateRangeFilter(currentFilters, index, val as [number, number])
+                //         setCurrentFilters(newFilters)
+                //       }}
+                //       minChange={(val) => {
+                //         const newFilters = updateRangeFilter(currentFilters, index, [val, null])
+                //         setCurrentFilters(newFilters)
+                //       }}
+                //       maxChange={(val) => {
+                //         const newFilters = updateRangeFilter(currentFilters, index, [null, val])
+                //         setCurrentFilters(newFilters)
+                //       }}
+                //     />
+                //   </li>
+                // )
               }
               return null
             })}
