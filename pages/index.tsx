@@ -1,34 +1,52 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import Layout from '~/components/layout/main'
-import Container from '~/components/layout/container'
-import { useGlobalState } from '~/state/context'
+import { GetStaticProps } from 'next'
 
-const IndexComponent: React.FunctionComponent = () => {
-  const { state, dispatch } = useGlobalState()
-  const { count } = state
+import React from 'react'
+import Layout from '~/components/layout/Layout'
+import Head from 'next/head'
+// import LinkTo from '~/components/global/LinkTo'
+import matter from 'gray-matter'
+
+import fs from 'fs'
+
+import Container from '~/components/layout/Container'
+import ReactMarkdown from 'react-markdown'
+import path from 'path'
+
+interface Props {
+  content: string
+  title: string
+  description: string
+}
+
+export const getStaticProps: GetStaticProps<Props> = () => {
+  const fileContent = fs.readFileSync(path.join(process.cwd(), 'content/index.md'))
+  const { data, content } = matter(fileContent)
+  return {
+    props: {
+      content,
+      title: data.title,
+      description: data.description,
+    },
+    revalidate: false,
+  }
+}
+
+const HomePage = (props: Props): JSX.Element => {
+  const { content, description, title } = props
   return (
     <Layout>
       <Head>
-        <title>Hello World</title>
+        <title>{title}</title>
+        <meta name="description" content={description} />
       </Head>
-      <Container>
-        <h1>Hello World</h1>
-        <br />
-        <Link passHref href="/another-page">
-          <a>another page</a>
-        </Link>
-        <br />
-        <input
-          type="number"
-          value={count}
-          onChange={(e) => {
-            const newCount = parseInt(e.target.value)
-            dispatch({ type: 'SET_COUNT', payload: newCount })
-          }}
-        ></input>
-      </Container>
+      <section className="py-10">
+        <Container>
+          <section className="prose">
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </section>
+        </Container>
+      </section>
     </Layout>
   )
 }
-export default IndexComponent
+export default HomePage

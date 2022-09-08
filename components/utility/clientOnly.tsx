@@ -1,6 +1,10 @@
 import dynamic from 'next/dynamic'
 
-const Comp: React.FunctionComponent = ({ children }) => <>{children}</>
+type Props = {
+  children: React.ReactNode
+}
+
+const Comp = ({ children }: Props): JSX.Element => <>{children}</>
 const ClientOnly = dynamic(() => Promise.resolve(Comp), {
   ssr: false,
 })

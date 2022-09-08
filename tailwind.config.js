@@ -1,9 +1,10 @@
 module.exports = {
-  purge: ['./components/**/*.tsx', './pages/**/*.tsx'],
+  content: ['./components/**/*.tsx', './pages/**/*.tsx'],
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Lato', 'sans-serif'],
+        sans: ['Open Sans', 'sans-serif'],
+        display: ['Ubuntu Mono', 'sans-serif'],
       },
       spacing: {
         '1/1': '100%',
@@ -35,15 +36,7 @@ module.exports = {
         '11/12': '91.666667%',
       },
     },
-    filter: {
-      // defaults to {}
-      none: 'none',
-      grayscale: 'grayscale(1)',
-      invert: 'invert(1)',
-      sepia: 'sepia(1)',
-      'blur-20': 'blur(20px)',
-    },
   },
   variants: {},
-  plugins: [require('tailwindcss-filters')],
+  plugins: [require('@tailwindcss/typography')],
 }

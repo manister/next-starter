@@ -15,10 +15,20 @@
     "jsx": "preserve",
     "downlevelIteration": true,
     "baseUrl": ".",
+    "noUncheckedIndexedAccess": true,
     "paths": {
       "~/*": ["./*"]
-    }
+    },
+    "incremental": true
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "ts-node": {
+    // these options are overrides used only by ts-node
+    // same as our --compilerOptions flag and our TS_NODE_COMPILER_OPTIONS environment variable
+    "files": true,
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
 }

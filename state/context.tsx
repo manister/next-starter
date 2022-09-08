@@ -6,8 +6,7 @@ interface IState {
 
 interface IAction {
   type: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  payload: any
+  payload?: number
 }
 
 interface IAppContext {
@@ -25,7 +24,7 @@ const reducer = (state: IState, { type, payload }: IAction): IState => {
     case 'SET_COUNT':
       return {
         ...state,
-        count: payload,
+        count: payload ?? state.count,
       }
     default:
       return state
@@ -38,13 +37,13 @@ const initialState: IState = {
 
 const AppContext = createContext({ state: initialState } as IAppContext)
 
-export const AppWrapper: React.FunctionComponent = ({ children }) => {
+interface Props {
+  children: React.ReactNode
+}
+
+export const AppWrapper = ({ children }: Props): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  return (
-    <AppContext.Provider value={{ state, dispatch }}>
-      {children}
-    </AppContext.Provider>
-  )
+  return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>
 }
 
 export const useGlobalState = (): IAppContext => useContext(AppContext)
