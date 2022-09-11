@@ -1,5 +1,4 @@
-declare module '*.md' {
-  const attributes: Record<string, string>
-  const html: string
-  export { html, attributes }
+interface IMarkdownFile {
+  attributes: Record<string, string>
+  html: string
 }

@@ -1,52 +1,26 @@
-import { GetStaticProps } from 'next'
-
 import React from 'react'
 import Layout from '~/components/layout/Layout'
 import Head from 'next/head'
 // import LinkTo from '~/components/global/LinkTo'
-import matter from 'gray-matter'
-
-import fs from 'fs'
 
 import Container from '~/components/layout/Container'
-import ReactMarkdown from 'react-markdown'
-import path from 'path'
 
-interface Props {
-  content: string
-  title: string
-  description: string
-}
+import { attributes, html } from '~/content/index.md'
+import parse from 'html-react-parser'
 
-export const getStaticProps: GetStaticProps<Props> = () => {
-  const fileContent = fs.readFileSync(path.join(process.cwd(), 'content/index.md'))
-  const { data, content } = matter(fileContent)
-  return {
-    props: {
-      content,
-      title: data.title,
-      description: data.description,
-    },
-    revalidate: false,
-  }
-}
-
-const HomePage = (props: Props): JSX.Element => {
-  const { content, description, title } = props
+const Page = (): JSX.Element => {
   return (
     <Layout>
       <Head>
-        <title>{title}</title>
-        <meta name="description" content={description} />
+        <title>{attributes.title}</title>
+        <meta name="description" content={attributes.description} />
       </Head>
       <section className="py-10">
         <Container>
-          <section className="prose">
-            <ReactMarkdown>{content}</ReactMarkdown>
-          </section>
+          <section className="prose">{parse(html)}</section>
         </Container>
       </section>
     </Layout>
   )
 }
-export default HomePage
+export default Page

@@ -13,7 +13,7 @@ interface INavLink {
 
 const navLinks: INavLink[] = [
   {
-    emoji: '🍋',
+    emoji: '🧶',
     text: 'Nav Item',
     href: '/pages/example',
     id: 'page-1',
